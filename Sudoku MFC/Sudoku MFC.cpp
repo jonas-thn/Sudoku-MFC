@@ -1,8 +1,7 @@
-
 #include "pch.h"
 #include "framework.h"
-#include "Sudoku MFC.h"
 #include "Sudoku MFCDlg.h"
+#include "Sudoku MFC.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
