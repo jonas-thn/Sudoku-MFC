@@ -1,6 +1,5 @@
 #pragma once
-
-class CSudoku
+class Undo
 {
 };
 

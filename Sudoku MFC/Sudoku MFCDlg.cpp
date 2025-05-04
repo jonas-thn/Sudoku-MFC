@@ -36,27 +36,10 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 	style &= ~WS_THICKFRAME;  //resize frame negieren / deaktivieren       
 	SetWindowLongPtr(m_hWnd, GWL_STYLE, style);
 
-	if (!dog.Load("./sprites/dogs.bmp", CSize(187, 107)))
-	{
-		AfxMessageBox(L"Dog Error");
-	}
-	dog.SetZ((20));
-	dog.SetPosition(-300, 120);
+	userInterface.InitUnserInerface();
 
-	if (!background.Load("./sprites/snow.bmp", CSize(450, 200)))
-	{
-		AfxMessageBox(L"BG Error");
-	}
-	background.SetZ(0);
-
-	framebuffer.Load("./sprites/snow.bmp");
-
-	spriteList.SetWorkspace(&framebuffer);
-	spriteList.Insert(&dog);
-	spriteList.Insert(&background);
-
-	/*SetWindowPos(nullptr, 0, 0, background.DibWidth() + 100, background.DibHeight() + 100, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
-	MoveWindow(0, 0, background.DibWidth() + 100, background.DibHeight() + 100, TRUE);*/
+	SetWindowPos(nullptr, 0, 0, 469, 570, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
+	MoveWindow(0, 0, 469, 570, TRUE);
 
 	SetTimer(1, 100, nullptr);
 
@@ -69,7 +52,7 @@ void CSudokuMFCDlg::OnPaint()
 
 	if (!IsIconic())
 	{
-		spriteList.RedrawAll(&dc, 0, 0);
+		userInterface.GetSpriteList().RedrawAll(&dc, 0, 0);
 	}
 
 	CDialogEx::OnPaint();
@@ -85,16 +68,7 @@ void CSudokuMFCDlg::OnTimer(UINT_PTR nIDEvent)
 	static int i = 0;
 	CClientDC dc(this);
 
-	dog.SetSpriteNumber(0, i % 7);
-	if (dog.GetXPos() > background.DibWidth())
-	{
-		dog.SetPosition(-300, 120);
-	}
-	else
-	{
-		dog.SetPosition(dog.GetXPos() + 40, dog.GetYPos());
-	}
-	spriteList.Update(&dc, 0, 0);
+	userInterface.GetSpriteList().Update(&dc, 0, 0);
 	i++;
 
 	CDialogEx::OnTimer(nIDEvent);

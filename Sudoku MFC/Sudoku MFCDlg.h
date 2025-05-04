@@ -1,6 +1,7 @@
 #pragma once
 #include "spritelib.h"
 #include <string>
+#include "UserInterface.h"
 
 class CSudokuMFCDlg : public CDialogEx
 {
@@ -21,9 +22,7 @@ protected:
 
 	virtual void DoDataExchange(CDataExchange* pDX);
 
-	CSprite background, dog;
-	CDIB framebuffer;
-	CSpriteList spriteList;
+	UserInterface userInterface;
 
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

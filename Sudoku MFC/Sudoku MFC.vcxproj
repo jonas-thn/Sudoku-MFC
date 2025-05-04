@@ -183,9 +183,10 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CSudoku.h" />
-    <ClInclude Include="CUndo.h" />
-    <ClInclude Include="CUserInterface.h" />
+    <ClInclude Include="Feld.h" />
+    <ClInclude Include="Sudoku.h" />
+    <ClInclude Include="Undo.h" />
+    <ClInclude Include="UserInterface.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
@@ -193,12 +194,14 @@
     <ClInclude Include="Sudoku MFC.h" />
     <ClInclude Include="Sudoku MFCDlg.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Vec2.h" />
     <ClInclude Include="XUnzip.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CSudoku.cpp" />
-    <ClCompile Include="CUndo.cpp" />
-    <ClCompile Include="CUserInterface.cpp" />
+    <ClCompile Include="Feld.cpp" />
+    <ClCompile Include="Sudoku.cpp" />
+    <ClCompile Include="Undo.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -208,6 +211,7 @@
     <ClCompile Include="spritelib.cpp" />
     <ClCompile Include="Sudoku MFC.cpp" />
     <ClCompile Include="Sudoku MFCDlg.cpp" />
+    <ClCompile Include="Vec2.cpp" />
     <ClCompile Include="XUnzip.cpp" />
   </ItemGroup>
   <ItemGroup>

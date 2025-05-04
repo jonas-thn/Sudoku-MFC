@@ -39,13 +39,19 @@
     <ClInclude Include="XUnzip.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="CSudoku.h">
+    <ClInclude Include="Sudoku.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="CUserInterface.h">
+    <ClInclude Include="UserInterface.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="CUndo.h">
+    <ClInclude Include="Undo.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Feld.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec2.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -65,13 +71,19 @@
     <ClCompile Include="XUnzip.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="CSudoku.cpp">
+    <ClCompile Include="Sudoku.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="CUserInterface.cpp">
+    <ClCompile Include="UserInterface.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="CUndo.cpp">
+    <ClCompile Include="Undo.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Feld.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec2.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
