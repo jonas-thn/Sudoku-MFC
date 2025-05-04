@@ -30,8 +30,8 @@ bool UserInterface::InitUnserInerface()
 
 	for (int i = 0; i < spritePoolSize; i++)
 	{
-		Vec2 coords = ConvertIndexToCoordinates(i);
-		numberPool[i].SetPosition(coords.x, coords.y);	
+		//Vec2 coords = ConvertIndexToCoordinates(i);
+		numberPool[i].SetPosition(0, 0);	
 		spriteList.Insert(&numberPool[i]);
 	}
 	spriteList.Insert(&sudokuBackground);
@@ -52,8 +52,28 @@ Vec2 UserInterface::ConvertIndexToCoordinates(int index)
 	return Vec2(x, y);
 }
 
-void UserInterface::SetField(Vec2 position, int number)
+void UserInterface::SetField(Vec2 position, char number)
 {
-	/*static int numberCounter[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	numberCounter[number - 1]++;*/
 }
+
+void UserInterface::UpdateSudoku(char* fields)
+{
+	for (int y = 0; y < 9; y++)
+	{
+		for (int x = 0; x < 9; x++)
+		{
+			Vec2 position(x, y);
+			char field = fields[9 * y + x];
+			int number = field - '0'; // Convert char to int
+			if (number == 0)
+			{
+				continue;
+			}
+
+			//numberPool[number % 9 - 1].SetPosition(0, 0);
+		}
+	}
+}
+
+
+

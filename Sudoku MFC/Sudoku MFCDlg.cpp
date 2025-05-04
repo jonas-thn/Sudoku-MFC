@@ -36,7 +36,10 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 	style &= ~WS_THICKFRAME;  //resize frame negieren / deaktivieren       
 	SetWindowLongPtr(m_hWnd, GWL_STYLE, style);
 
+	sudoku.Init();
+	sudoku.LoadFromFile("./sudokus/Sudoku1.txt", "./sudokus/Sudoku1_Save.txt");
 	userInterface.InitUnserInerface();
+	userInterface.UpdateSudoku(sudoku.GetFields());
 
 	SetWindowPos(nullptr, 0, 0, 469, 570, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 	MoveWindow(0, 0, 469, 570, TRUE);

@@ -2,6 +2,7 @@
 #include "spritelib.h"
 #include <string>
 #include "UserInterface.h"
+#include "Sudoku.h"
 
 class CSudokuMFCDlg : public CDialogEx
 {
@@ -22,6 +23,7 @@ protected:
 
 	virtual void DoDataExchange(CDataExchange* pDX);
 
+	Sudoku sudoku;
 	UserInterface userInterface;
 
 public:

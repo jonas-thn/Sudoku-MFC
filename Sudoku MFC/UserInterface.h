@@ -15,8 +15,8 @@ public:
 	bool InitUnserInerface();
 	CSpriteList& GetSpriteList();
 	Vec2 ConvertIndexToCoordinates(int index);
-	void SetField(Vec2 position, int number);
-	void ClearField(Vec2 position);
+	void SetField(Vec2 position, char number);
+	void UpdateSudoku(char* fields);
 
 private:
 	CSprite sudokuBackground;
