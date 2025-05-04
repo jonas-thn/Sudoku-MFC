@@ -51,3 +51,9 @@ Vec2 UserInterface::ConvertIndexToCoordinates(int index)
 
 	return Vec2(x, y);
 }
+
+void UserInterface::SetField(Vec2 position, int number)
+{
+	/*static int numberCounter[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	numberCounter[number - 1]++;*/
+}

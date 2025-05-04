@@ -48,9 +48,6 @@
     <ClInclude Include="Undo.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Feld.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Vec2.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -78,9 +75,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Undo.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Feld.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Vec2.cpp">

@@ -66,10 +66,21 @@ void CSudokuMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 void CSudokuMFCDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	static int i = 0;
-	CClientDC dc(this);
 
-	userInterface.GetSpriteList().Update(&dc, 0, 0);
+	Update();
+	Draw();
+
 	i++;
-
 	CDialogEx::OnTimer(nIDEvent);
+}
+
+void CSudokuMFCDlg::Update()
+{
+
+}
+
+void CSudokuMFCDlg::Draw()
+{
+	CClientDC dc(this);
+	userInterface.GetSpriteList().Update(&dc, 0, 0);
 }

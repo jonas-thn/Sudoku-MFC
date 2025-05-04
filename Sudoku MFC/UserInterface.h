@@ -4,6 +4,8 @@
 #include <vector>
 #include "Vec2.h"
 
+
+
 class UserInterface
 {
 public:
@@ -13,6 +15,8 @@ public:
 	bool InitUnserInerface();
 	CSpriteList& GetSpriteList();
 	Vec2 ConvertIndexToCoordinates(int index);
+	void SetField(Vec2 position, int number);
+	void ClearField(Vec2 position);
 
 private:
 	CSprite sudokuBackground;

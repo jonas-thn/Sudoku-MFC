@@ -183,7 +183,6 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Feld.h" />
     <ClInclude Include="Sudoku.h" />
     <ClInclude Include="Undo.h" />
     <ClInclude Include="UserInterface.h" />
@@ -198,7 +197,6 @@
     <ClInclude Include="XUnzip.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Feld.cpp" />
     <ClCompile Include="Sudoku.cpp" />
     <ClCompile Include="Undo.cpp" />
     <ClCompile Include="UserInterface.cpp" />
