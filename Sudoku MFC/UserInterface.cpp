@@ -2,24 +2,8 @@
 #include "UserInterface.h"
 
 
-bool UserInterface::InitUnserInerface()
+bool UserInterface::InitUnserInerface(char* fields)
 {
-	for (int i = 0; i < spritePoolSize; i++)
-	{
-		const int number = i % 9 + 1;
-		std::string numberPath = "./sprites/" + std::to_string(number) + ".bmp"; //Load() akzeptiert kein const char*, sondern nur char* 
-		std::vector<char> path(numberPath.begin(), numberPath.end());
-		path.push_back('\0');
-
-		if (!numberPool[i].Load(path.data(), CSize(40, 40)))
-		{
-			AfxMessageBox(L"Error loading number sprite!");
-			return false;
-		}
-		numberPool[i].SetZ(10);
-		numberPool[i].SetPosition(-100, -100);
-	}
-
 	if (!sudokuBackground.Load("./sprites/sudoku.bmp", CSize(450, 200)))
 	{
 		AfxMessageBox(L"Error loading sudoku background!");
@@ -31,11 +15,25 @@ bool UserInterface::InitUnserInerface()
 
 	spriteList.SetWorkspace(&framebuffer);
 
-	for (int i = 0; i < spritePoolSize; i++)
+	for (int y = 0; y < 9; y++)
 	{
-		numberPool[i].SetPosition(-100, -100);
-		spriteList.Insert(&numberPool[i]);
+		for (int x = 0; x < 9; x++)
+		{
+			char field = fields[9 * y + x];
+			int index = x + (y * 9);
+			int number = field - '0'; 
+			if (number == 0)
+			{
+				spriteMap.push_back(SpriteData(nullptr, Vec2(x, y), index));
+				continue;
+			}
+
+			CSprite* numberSprite = LoadNumberSprite(number);
+			spriteMap.push_back(SpriteData(numberSprite, Vec2(x, y), index));
+			numberSprite->SetPosition(x * tileDimension.x + offsets.x, y * tileDimension.y + offsets.y);
+		}
 	}
+
 	spriteList.Insert(&sudokuBackground);
 
 	return true;
@@ -46,55 +44,49 @@ CSpriteList& UserInterface::GetSpriteList()
 	return spriteList;
 }
 
-Vec2 UserInterface::ConvertIndexToCoordinates(int index)
-{
-	int x = (index % 9) * tileDimension.x + offsets.x;
-	int y = (index / 9) * tileDimension.y + offsets.y;
-
-	return Vec2(x, y);
-}
-
 void UserInterface::SetField(Vec2 position, char number)
 {
+	CSprite* numberSprite = LoadNumberSprite(number - '0');
+	CSprite* existingSprite = GetSpriteFromPosition(position);
+	if (existingSprite != nullptr)
+	{
+		spriteList.Remove(existingSprite);
+	}
+	int index = position.x + (position.y * 9);
+	spriteMap.push_back(SpriteData(numberSprite, position, index));
+	numberSprite->SetPosition(position.x * tileDimension.x + offsets.x, position.y * tileDimension.y + offsets.y);
 }
 
-void UserInterface::UpdateSudoku(char* fields)
+CSprite* UserInterface::LoadNumberSprite(int number)
 {
-	static int numberCounter[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	std::string numberPath = "./sprites/" + std::to_string(number) + ".bmp"; //Load() akzeptiert kein const char*, sondern nur char* 
+	std::vector<char> path(numberPath.begin(), numberPath.end());
+	path.push_back('\0');
 
-	for (int y = 0; y < 9; y++)
+	CSprite* numberSprite = new CSprite();
+	if (!numberSprite->Load(path.data(), CSize(40, 40)))
 	{
-		for (int x = 0; x < 9; x++)
-		{
-			char field = fields[9 * y + x];
-			int number = field - '0'; // Convert char to int
-			if (number == 0)
-			{
-				continue;
-			}
+		delete numberSprite;
+		AfxMessageBox(L"Error loading number sprite!");
+		return nullptr;
+	}
+	numberSprite->SetZ(10);
+	numberSprite->SetPosition(-100, -100);
+	spriteList.Insert(numberSprite);
+	return numberSprite;
+}
 
-			int poolPosition = numberCounter[number - 1] * 9 + number - 1;
-			numberPool[poolPosition].SetPosition(x * tileDimension.x + offsets.x, y * tileDimension.y + offsets.y);
-			numberCounter[number - 1]++;
+CSprite* UserInterface::GetSpriteFromPosition(Vec2 position)
+{
+	for (const SpriteData& spriteData : spriteMap)
+	{
+		if (spriteData.position == position)
+		{
+			return spriteData.sprite;
 		}
 	}
+	return nullptr;
 }
-
-//bool UserInterface::LoadNumberSprite(int number)
-//{
-//	std::string numberPath = "./sprites/" + std::to_string(number) + ".bmp"; //Load() akzeptiert kein const char*, sondern nur char* 
-//	std::vector<char> path(numberPath.begin(), numberPath.end());
-//	path.push_back('\0');
-//
-//	CSprite numberSprite;
-//	if (numberSprite.Load(path.data(), CSize(40, 40)))
-//	{
-//		AfxMessageBox(L"Error loading number sprite!");
-//		return false;
-//	}
-//	numberSprite.SetZ(10);
-//	numberPool[i].SetPosition(-100, -100);
-//}
 
 
 

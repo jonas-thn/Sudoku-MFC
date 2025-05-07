@@ -4,7 +4,15 @@
 #include <vector>
 #include "Vec2.h"
 
+struct SpriteData
+{
+	SpriteData(CSprite* sprite, Vec2 position, int number)
+		: sprite(sprite), position(position), number(number) { }
 
+	CSprite* sprite;
+	Vec2 position;
+	int number;
+};
 
 class UserInterface
 {
@@ -12,12 +20,12 @@ public:
 	UserInterface() = default;
 	~UserInterface() = default;
 
-	bool InitUnserInerface();
+	bool InitUnserInerface(char* fields);
 	CSpriteList& GetSpriteList();
-	Vec2 ConvertIndexToCoordinates(int index);
 	void SetField(Vec2 position, char number);
-	void UpdateSudoku(char* fields);
-	bool LoadNumberSprite(int number);
+	CSprite* LoadNumberSprite(int number);
+
+	CSprite* GetSpriteFromPosition(Vec2 position);
 
 private:
 	CSprite sudokuBackground;
@@ -25,8 +33,7 @@ private:
 
 	const Vec2 tileDimension = Vec2(50, 47);
 	const Vec2 offsets = Vec2(5, 10);
-	const int spritePoolSize = 81;
-	CSprite numberPool[81];
 	CSpriteList spriteList;
+	std::vector<SpriteData> spriteMap;
 };
 

@@ -38,8 +38,8 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 
 	sudoku.Init();
 	sudoku.LoadFromFile("./sudokus/Sudoku1.txt", "./sudokus/Sudoku1_Save.txt");
-	userInterface.InitUnserInerface();
-	userInterface.UpdateSudoku(sudoku.GetFields());
+	userInterface.InitUnserInerface(sudoku.GetFields());
+	//userInterface.UpdateSudoku();
 
 	SetWindowPos(nullptr, 0, 0, 469, 570, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 	MoveWindow(0, 0, 469, 570, TRUE);
