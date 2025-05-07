@@ -23,10 +23,8 @@ BEGIN_MESSAGE_MAP(CSudokuMFCDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_TIMER()
-	ON_BN_CLICKED(IDC_BUTTON2, &CSudokuMFCDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON5, &CSudokuMFCDlg::OnBnClickedButton5)
-	ON_WM_KEYDOWN()
-	ON_WM_CHAR()
+	ON_BN_CLICKED(IDC_BUTTON2, &CSudokuMFCDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 BOOL CSudokuMFCDlg::OnInitDialog()
@@ -99,12 +97,6 @@ void CSudokuMFCDlg::Draw()
 	userInterface.GetSpriteList().Update(&dc, 0, 0);
 }
 
-
-void CSudokuMFCDlg::OnBnClickedButton2()
-{
-	userInterface.SetField(userInterface.GetLastMousePos(), '1');
-}
-
 void CSudokuMFCDlg::OnBnClickedButton5()
 {
 	CWnd* pMainWnd = AfxGetMainWnd();
@@ -121,10 +113,16 @@ BOOL CSudokuMFCDlg::PreTranslateMessage(MSG* pMsg)
 		if (pMsg->wParam >= '0' && pMsg->wParam <= '9')
 		{
 			char key = (char)pMsg->wParam;
-			userInterface.SetField(userInterface.GetLastMousePos(), key);
+			userInterface.SetField(userInterface.GetLastMousePos(), key, sudoku.GetFields());
 			return TRUE;
 		}
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+void CSudokuMFCDlg::OnBnClickedButton2()
+{
+	sudoku.ClearSudoku();
+	userInterface.CompleteUpdate(sudoku.GetFields());
 }

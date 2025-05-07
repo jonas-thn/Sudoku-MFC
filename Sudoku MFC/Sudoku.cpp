@@ -78,7 +78,7 @@ void Sudoku::ClearSudoku()
 		{
 			if (GetEditField(Vec2(x, y)) == '1') //wenn editierbar
 			{
-				SetField(Vec2(x, y), '.'); //auf leeres feld zurücksetzen
+				SetField(Vec2(x, y), '0'); //auf leeres feld zurücksetzen
 			}
 		}
 	}

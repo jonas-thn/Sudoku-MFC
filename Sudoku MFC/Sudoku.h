@@ -30,7 +30,6 @@ public:
 private:
 	const int WIDTH = 9;
 	const int HEIGHT = 9;
-	const int QUAD = 3;
 
 	char* fields = nullptr;
 	char* editFields = nullptr;

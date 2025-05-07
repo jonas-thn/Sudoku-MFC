@@ -17,14 +17,14 @@ bool UserInterface::Init(char* fields)
 	sudokuBackground.SetPosition(0, 0);
 	spriteList.Insert(&sudokuBackground);
 
-	for (int y = 0; y < 9; y++)
+	for (int y = 0; y < HEIGHT; y++)
 	{
-		for (int x = 0; x < 9; x++)
+		for (int x = 0; x < WIDTH; x++)
 		{
 			spriteMap.push_back(SpriteData(nullptr, Vec2(x, y), 0));
 
-			char field = fields[9 * y + x];
-			int index = x + (y * 9);
+			int index = x + (y * WIDTH);
+			char field = fields[index];
 			int number = field - '0'; 
 			if (number == 0)
 			{
@@ -50,7 +50,7 @@ CSpriteList& UserInterface::GetSpriteList()
 	return spriteList;
 }
 
-void UserInterface::SetField(Vec2 position, char number)
+void UserInterface::SetField(Vec2 position, char number, char* bufferToUpdate)
 {
 	CSprite* numberSprite = LoadNumberSprite(number - '0');
 	CSprite* existingSprite = GetSpriteFromPosition(position);
@@ -58,9 +58,11 @@ void UserInterface::SetField(Vec2 position, char number)
 	{
 		spriteList.Remove(existingSprite);
 	}
-	int index = position.x + (position.y * 9);
+	int index = position.x + (position.y * WIDTH);
 	spriteMap.at(index) = SpriteData(numberSprite, position, number);
 	numberSprite->SetPosition(position.x * tileDimension.x + offsets.x, position.y * tileDimension.y + offsets.y);
+
+	bufferToUpdate[index] = number;
 }
 
 CSprite* UserInterface::LoadNumberSprite(int number)
@@ -98,15 +100,47 @@ void UserInterface::SetBorder(const Vec2& pos)
 {
 	lastMousePos = pos;
 	if (lastMousePos.x < 0) { lastMousePos.x = 0; }
-	if (lastMousePos.x > 8) { lastMousePos.x = 8; }
+	if (lastMousePos.x > (WIDTH -1)) { lastMousePos.x = (WIDTH-1); }
 	if (lastMousePos.y < 0) { lastMousePos.y = 0; }
-	if (lastMousePos.y > 8) { lastMousePos.y = 8; }
+	if (lastMousePos.y > (HEIGHT -1)) { lastMousePos.y = (HEIGHT-1); }
 	border.SetPosition(lastMousePos);
 }
 
 Vec2 UserInterface::GetLastMousePos()
 {
 	return lastMousePos;
+}
+
+void UserInterface::CompleteUpdate(char* fields)
+{
+	for (int y = 0; y < HEIGHT; y++)
+	{
+		for (int x = 0; x < WIDTH; x++)
+		{
+			int index = x + (y * WIDTH);
+			char field = fields[index];
+			int number = field - '0';
+			if (number == 0)
+			{
+				ClearField(Vec2(x, y), fields);
+				continue;
+			}
+
+			SetField(Vec2(x, y), field, fields);
+		}
+	}
+}
+
+void UserInterface::ClearField(Vec2 position, char* bufferToUpdate)
+{
+	CSprite* existingSprite = GetSpriteFromPosition(position);
+	if (existingSprite != nullptr)
+	{
+		spriteList.Remove(existingSprite);
+	}
+	int index = position.x + (position.y * WIDTH);
+	spriteMap.at(index) = SpriteData(nullptr, position, 0);
+	bufferToUpdate[index] = '0';
 }
 
 bool Border::Init(CSpriteList& spriteList)
@@ -154,7 +188,5 @@ void Border::SetPosition(Vec2 position)
 	borderRight.SetPosition(position.x * tileDimension.x + 46 + offsets.x, position.y * tileDimension.y + offsets.y);
 	borderTop.SetPosition(position.x * tileDimension.x + offsets.x, position.y * tileDimension.y + offsets.y);
 	borderBottom.SetPosition(position.x * tileDimension.x + offsets.x, position.y * tileDimension.y + 46 + offsets.y);
-
-	
 }
 
