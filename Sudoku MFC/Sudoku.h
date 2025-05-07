@@ -3,6 +3,24 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <map>
+
+enum class Difficulty : int
+{
+	Unknown,
+	Easy,
+	Medium,
+	Hard,
+	Impossible,
+	Generated
+};
+
+struct FileData
+{
+	std::string original;
+	std::string save;
+	Difficulty difficulty;
+};
 
 class Sudoku
 {
@@ -24,7 +42,7 @@ public:
 	void ClearSudoku();
 	int GetBufferLength();
 
-	bool LoadFromFile(std::string original, std::string save);
+	bool LoadFromFile(std::string original, std::string save, Difficulty difficulty);
 	bool SaveToFile(std::string save);
 
 private:
@@ -33,5 +51,6 @@ private:
 
 	char* fields = nullptr;
 	char* editFields = nullptr;
+	FileData currentFileData;
 };
 

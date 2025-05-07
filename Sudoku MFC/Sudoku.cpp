@@ -29,6 +29,11 @@ bool Sudoku::Init()
 		editFields[i] = '0';
 	}
 
+	currentFileData = 
+	{
+		"", "", Difficulty::Unknown
+	};
+
 	return true;
 }
 
@@ -89,7 +94,7 @@ int Sudoku::GetBufferLength()
 	return WIDTH * HEIGHT;
 }
 
-bool Sudoku::LoadFromFile(std::string original, std::string save)
+bool Sudoku::LoadFromFile(std::string original, std::string save, Difficulty difficulty)
 {
 	std::ifstream saveFile(save);
 	if (!saveFile) 
@@ -125,6 +130,13 @@ bool Sudoku::LoadFromFile(std::string original, std::string save)
 		}
 	}
 	originalFile.close();
+
+	currentFileData = 
+	{
+		original,
+		save,
+		difficulty
+	};
 
 	return true;
 }

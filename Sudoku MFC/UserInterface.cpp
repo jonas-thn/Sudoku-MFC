@@ -4,6 +4,8 @@
 
 bool UserInterface::Init(char* fields)
 {
+	tempFieldBuffer.resize(WIDTH * HEIGHT);
+
 	framebuffer.Load("./sprites/white.bmp");
 
 	spriteList.SetWorkspace(&framebuffer);
@@ -26,6 +28,7 @@ bool UserInterface::Init(char* fields)
 			int index = x + (y * WIDTH);
 			char field = fields[index];
 			int number = field - '0'; 
+			tempFieldBuffer.at(index) = field;
 			if (number == 0)
 			{
 				spriteMap.at(index) = SpriteData(nullptr, Vec2(x, y), number);
@@ -50,7 +53,7 @@ CSpriteList& UserInterface::GetSpriteList()
 	return spriteList;
 }
 
-void UserInterface::SetField(Vec2 position, char number, char* bufferToUpdate)
+void UserInterface::SetField(Vec2 position, char number)
 {
 	CSprite* numberSprite = LoadNumberSprite(number - '0');
 	CSprite* existingSprite = GetSpriteFromPosition(position);
@@ -62,7 +65,7 @@ void UserInterface::SetField(Vec2 position, char number, char* bufferToUpdate)
 	spriteMap.at(index) = SpriteData(numberSprite, position, number);
 	numberSprite->SetPosition(position.x * tileDimension.x + offsets.x, position.y * tileDimension.y + offsets.y);
 
-	bufferToUpdate[index] = number;
+	tempFieldBuffer.at(index) = number;
 }
 
 CSprite* UserInterface::LoadNumberSprite(int number)
@@ -122,16 +125,16 @@ void UserInterface::CompleteUpdate(char* fields)
 			int number = field - '0';
 			if (number == 0)
 			{
-				ClearField(Vec2(x, y), fields);
+				ClearField(Vec2(x, y));
 				continue;
 			}
 
-			SetField(Vec2(x, y), field, fields);
+			SetField(Vec2(x, y), field);
 		}
 	}
 }
 
-void UserInterface::ClearField(Vec2 position, char* bufferToUpdate)
+void UserInterface::ClearField(Vec2 position)
 {
 	CSprite* existingSprite = GetSpriteFromPosition(position);
 	if (existingSprite != nullptr)
@@ -140,7 +143,13 @@ void UserInterface::ClearField(Vec2 position, char* bufferToUpdate)
 	}
 	int index = position.x + (position.y * WIDTH);
 	spriteMap.at(index) = SpriteData(nullptr, position, 0);
-	bufferToUpdate[index] = '0';
+
+	tempFieldBuffer.at(index) = '0';
+}
+
+char* UserInterface::GetTempFieldBuffer()
+{
+	return tempFieldBuffer.data();
 }
 
 bool Border::Init(CSpriteList& spriteList)

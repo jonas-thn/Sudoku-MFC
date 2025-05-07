@@ -40,13 +40,15 @@ public:
 
 	bool Init(char* fields);
 	CSpriteList& GetSpriteList();
-	void SetField(Vec2 position, char number, char* bufferToUpdate);
+	void SetField(Vec2 position, char number);
 	CSprite* LoadNumberSprite(int number);
 	CSprite* GetSpriteFromPosition(Vec2 position);
 	void SetBorder(const Vec2& pos);
 	Vec2 GetLastMousePos();
 	void CompleteUpdate(char* fields);
-	void ClearField(Vec2 position, char* bufferToUpdate);
+	void ClearField(Vec2 position);
+
+	char* GetTempFieldBuffer();
 	
 private:
 	Border border;
@@ -57,6 +59,7 @@ private:
 	const Vec2 offsets = Vec2(5, 10);
 	CSpriteList spriteList;
 	std::vector<SpriteData> spriteMap;
+	std::vector<char> tempFieldBuffer;
 
 	Vec2 lastMousePos = Vec2(0, 0);
 	const int WIDTH = 9;

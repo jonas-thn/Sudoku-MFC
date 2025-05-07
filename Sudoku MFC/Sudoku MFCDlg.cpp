@@ -25,6 +25,10 @@ BEGIN_MESSAGE_MAP(CSudokuMFCDlg, CDialogEx)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_BUTTON5, &CSudokuMFCDlg::OnBnClickedButton5)
 	ON_BN_CLICKED(IDC_BUTTON2, &CSudokuMFCDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON1, &CSudokuMFCDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON6, &CSudokuMFCDlg::OnBnClickedButton6)
+	ON_BN_CLICKED(IDC_BUTTON3, &CSudokuMFCDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CSudokuMFCDlg::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 BOOL CSudokuMFCDlg::OnInitDialog()
@@ -39,7 +43,7 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 	SetWindowLongPtr(m_hWnd, GWL_STYLE, style);
 
 	sudoku.Init();
-	sudoku.LoadFromFile("./sudokus/Sudoku1.txt", "./sudokus/Sudoku1_Save.txt");
+	sudoku.LoadFromFile("./sudokus/Sudoku1.txt", "./sudokus/Sudoku1_Save.txt", Difficulty::Easy);
 	userInterface.Init(sudoku.GetFields());
 
 	SetWindowPos(nullptr, 0, 0, 469, 570, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
@@ -113,7 +117,7 @@ BOOL CSudokuMFCDlg::PreTranslateMessage(MSG* pMsg)
 		if (pMsg->wParam >= '0' && pMsg->wParam <= '9')
 		{
 			char key = (char)pMsg->wParam;
-			userInterface.SetField(userInterface.GetLastMousePos(), key, sudoku.GetFields());
+			userInterface.SetField(userInterface.GetLastMousePos(), key);
 			return TRUE;
 		}
 	}
@@ -121,8 +125,34 @@ BOOL CSudokuMFCDlg::PreTranslateMessage(MSG* pMsg)
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
+//RESET
 void CSudokuMFCDlg::OnBnClickedButton2()
 {
 	sudoku.ClearSudoku();
 	userInterface.CompleteUpdate(sudoku.GetFields());
+}
+
+//SAVE
+void CSudokuMFCDlg::OnBnClickedButton1()
+{
+	sudoku.FillFieldBuffer(userInterface.GetTempFieldBuffer());
+	sudoku.SaveToFile("./sudokus/Sudoku1_Save.txt");
+}
+
+//LOAD
+void CSudokuMFCDlg::OnBnClickedButton6()
+{
+	
+}
+
+//UNDO
+void CSudokuMFCDlg::OnBnClickedButton3()
+{
+	
+}
+
+//SOLVE
+void CSudokuMFCDlg::OnBnClickedButton4()
+{
+	
 }
