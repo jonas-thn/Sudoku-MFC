@@ -20,7 +20,7 @@ public:
 	UserInterface() = default;
 	~UserInterface() = default;
 
-	bool InitUnserInerface(char* fields);
+	bool Init(char* fields);
 	CSpriteList& GetSpriteList();
 	void SetField(Vec2 position, char number);
 	CSprite* LoadNumberSprite(int number);

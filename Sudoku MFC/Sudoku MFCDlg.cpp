@@ -23,6 +23,8 @@ BEGIN_MESSAGE_MAP(CSudokuMFCDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_BUTTON2, &CSudokuMFCDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON5, &CSudokuMFCDlg::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 BOOL CSudokuMFCDlg::OnInitDialog()
@@ -38,8 +40,7 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 
 	sudoku.Init();
 	sudoku.LoadFromFile("./sudokus/Sudoku1.txt", "./sudokus/Sudoku1_Save.txt");
-	userInterface.InitUnserInerface(sudoku.GetFields());
-	//userInterface.UpdateSudoku();
+	userInterface.Init(sudoku.GetFields());
 
 	SetWindowPos(nullptr, 0, 0, 469, 570, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 	MoveWindow(0, 0, 469, 570, TRUE);
@@ -88,4 +89,20 @@ void CSudokuMFCDlg::Draw()
 {
 	CClientDC dc(this);
 	userInterface.GetSpriteList().Update(&dc, 0, 0);
+}
+
+
+
+void CSudokuMFCDlg::OnBnClickedButton2()
+{
+	userInterface.SetField(Vec2(0, 0), '1');
+}
+
+void CSudokuMFCDlg::OnBnClickedButton5()
+{
+	CWnd* pMainWnd = AfxGetMainWnd();
+	if (pMainWnd)
+	{
+		pMainWnd->PostMessage(WM_CLOSE);
+	}
 }

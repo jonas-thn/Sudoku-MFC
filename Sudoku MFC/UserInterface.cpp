@@ -2,7 +2,7 @@
 #include "UserInterface.h"
 
 
-bool UserInterface::InitUnserInerface(char* fields)
+bool UserInterface::Init(char* fields)
 {
 	if (!sudokuBackground.Load("./sprites/sudoku.bmp", CSize(450, 200)))
 	{
@@ -19,17 +19,19 @@ bool UserInterface::InitUnserInerface(char* fields)
 	{
 		for (int x = 0; x < 9; x++)
 		{
+			spriteMap.push_back(SpriteData(nullptr, Vec2(x, y), 0));
+
 			char field = fields[9 * y + x];
 			int index = x + (y * 9);
 			int number = field - '0'; 
 			if (number == 0)
 			{
-				spriteMap.push_back(SpriteData(nullptr, Vec2(x, y), index));
+				spriteMap.at(index) = SpriteData(nullptr, Vec2(x, y), number);
 				continue;
 			}
 
 			CSprite* numberSprite = LoadNumberSprite(number);
-			spriteMap.push_back(SpriteData(numberSprite, Vec2(x, y), index));
+			spriteMap.at(index) = SpriteData(numberSprite, Vec2(x, y), number);
 			numberSprite->SetPosition(x * tileDimension.x + offsets.x, y * tileDimension.y + offsets.y);
 		}
 	}
@@ -53,7 +55,7 @@ void UserInterface::SetField(Vec2 position, char number)
 		spriteList.Remove(existingSprite);
 	}
 	int index = position.x + (position.y * 9);
-	spriteMap.push_back(SpriteData(numberSprite, position, index));
+	spriteMap.at(index) = SpriteData(numberSprite, position, number);
 	numberSprite->SetPosition(position.x * tileDimension.x + offsets.x, position.y * tileDimension.y + offsets.y);
 }
 

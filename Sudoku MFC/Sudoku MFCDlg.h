@@ -33,4 +33,7 @@ public:
 private:
 	void Update();
 	void Draw();
+public:
+	afx_msg void OnBnClickedButton2();
+	afx_msg void OnBnClickedButton5();
 };
