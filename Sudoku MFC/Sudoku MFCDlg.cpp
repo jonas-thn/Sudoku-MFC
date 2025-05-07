@@ -63,6 +63,8 @@ void CSudokuMFCDlg::OnPaint()
 
 void CSudokuMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
+
+
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 

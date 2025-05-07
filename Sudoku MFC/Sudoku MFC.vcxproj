@@ -209,7 +209,6 @@
     <ClCompile Include="spritelib.cpp" />
     <ClCompile Include="Sudoku MFC.cpp" />
     <ClCompile Include="Sudoku MFCDlg.cpp" />
-    <ClCompile Include="Vec2.cpp" />
     <ClCompile Include="XUnzip.cpp" />
   </ItemGroup>
   <ItemGroup>
