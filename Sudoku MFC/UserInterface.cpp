@@ -8,7 +8,7 @@ bool UserInterface::Init(char* fields)
 
 	spriteList.SetWorkspace(&framebuffer);
 
-	if (!sudokuBackground.Load("./sprites/sudoku.bmp", CSize(450, 200)))
+	if (!sudokuBackground.Load("./sprites/sudoku.bmp"))
 	{
 		AfxMessageBox(L"Error loading sudoku background!");
 		return false;
