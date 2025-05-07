@@ -4,16 +4,18 @@
 
 bool UserInterface::Init(char* fields)
 {
+	framebuffer.Load("./sprites/sudoku.bmp");
+
+	spriteList.SetWorkspace(&framebuffer);
+
 	if (!sudokuBackground.Load("./sprites/sudoku.bmp", CSize(450, 200)))
 	{
 		AfxMessageBox(L"Error loading sudoku background!");
 		return false;
 	}
 	sudokuBackground.SetZ(0);
-
-	framebuffer.Load("./sprites/sudoku.bmp");
-
-	spriteList.SetWorkspace(&framebuffer);
+	sudokuBackground.SetPosition(0, 0);
+	spriteList.Insert(&sudokuBackground);
 
 	for (int y = 0; y < 9; y++)
 	{
@@ -36,7 +38,9 @@ bool UserInterface::Init(char* fields)
 		}
 	}
 
-	spriteList.Insert(&sudokuBackground);
+	border.Init(spriteList);
+
+	border.SetPosition(Vec2(8, 8));
 
 	return true;
 }
@@ -90,5 +94,52 @@ CSprite* UserInterface::GetSpriteFromPosition(Vec2 position)
 	return nullptr;
 }
 
+bool Border::Init(CSpriteList& spriteList)
+{
+	if (!borderLeft.Load("./sprites/border_v.bmp", CSize(4, 50), 0))
+	{
+		AfxMessageBox(L"Error loading border!");
+		return false;
+	}
+	borderLeft.SetPosition(0, 0);
+	borderLeft.SetZ(20);
+	spriteList.Insert(&borderLeft);
 
+	if (!borderRight.Load("./sprites/border_v.bmp", CSize(4, 50), 0))
+	{
+		AfxMessageBox(L"Error loading border!");
+		return false;
+	}
+	borderRight.SetPosition(46, 0);
+	borderRight.SetZ(20);
+	spriteList.Insert(&borderRight);
+
+	if (!borderTop.Load("./sprites/border_h.bmp", CSize(50, 4), 0))
+	{
+		AfxMessageBox(L"Error loading border!");
+		return false;
+	}
+	borderTop.SetPosition(0, 0);
+	borderTop.SetZ(20);
+	spriteList.Insert(&borderTop);
+
+	if (!borderBottom.Load("./sprites/border_h.bmp", CSize(50, 4), 0))
+	{
+		AfxMessageBox(L"Error loading border!");
+		return false;
+	}
+	borderBottom.SetPosition(0, 46);
+	borderBottom.SetZ(20);
+	spriteList.Insert(&borderBottom);
+}
+
+void Border::SetPosition(Vec2 position)
+{
+	borderLeft.SetPosition(position.x * tileDimension.x + offsets.x, position.y * tileDimension.y + offsets.y);
+	borderRight.SetPosition(position.x * tileDimension.x + 46 + offsets.x, position.y * tileDimension.y + offsets.y);
+	borderTop.SetPosition(position.x * tileDimension.x + offsets.x, position.y * tileDimension.y + offsets.y);
+	borderBottom.SetPosition(position.x * tileDimension.x + offsets.x, position.y * tileDimension.y + 46 + offsets.y);
+
+	
+}
 

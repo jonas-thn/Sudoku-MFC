@@ -3,6 +3,24 @@
 #include <string>
 #include <vector>
 #include "Vec2.h"
+#include <algorithm>
+
+struct Border
+{
+	Border() = default;
+	bool Init(CSpriteList& spriteList);
+	void SetPosition(Vec2 position);	
+	
+private:
+	CSprite borderLeft;
+	CSprite borderRight;
+	CSprite borderTop;
+	CSprite borderBottom;
+
+	Vec2 position = Vec2(0, 0);
+	Vec2 tileDimension = Vec2(49, 47);
+	Vec2 offsets = Vec2(5, 5);
+};
 
 struct SpriteData
 {
@@ -27,9 +45,10 @@ public:
 
 	CSprite* GetSpriteFromPosition(Vec2 position);
 
+	Border border;
+	CDIB framebuffer;
 private:
 	CSprite sudokuBackground;
-	CDIB framebuffer;
 
 	const Vec2 tileDimension = Vec2(50, 47);
 	const Vec2 offsets = Vec2(5, 10);

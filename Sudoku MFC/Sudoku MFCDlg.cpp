@@ -64,7 +64,13 @@ void CSudokuMFCDlg::OnPaint()
 
 void CSudokuMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
+	//w: 453 h:435
+	int tile = 50;
 
+	int x = point.x / tile;
+	int y = point.y / tile;
+	Vec2 position(x, y);
+	userInterface.border.SetPosition(position);
 
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
@@ -90,7 +96,6 @@ void CSudokuMFCDlg::Draw()
 	CClientDC dc(this);
 	userInterface.GetSpriteList().Update(&dc, 0, 0);
 }
-
 
 
 void CSudokuMFCDlg::OnBnClickedButton2()
