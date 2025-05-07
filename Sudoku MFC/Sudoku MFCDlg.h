@@ -22,6 +22,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	virtual void DoDataExchange(CDataExchange* pDX);
+	BOOL CSudokuMFCDlg::PreTranslateMessage(MSG* pMsg) override;
 
 	Sudoku sudoku;
 	UserInterface userInterface;

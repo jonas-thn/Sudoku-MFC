@@ -25,6 +25,8 @@ BEGIN_MESSAGE_MAP(CSudokuMFCDlg, CDialogEx)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_BUTTON2, &CSudokuMFCDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON5, &CSudokuMFCDlg::OnBnClickedButton5)
+	ON_WM_KEYDOWN()
+	ON_WM_CHAR()
 END_MESSAGE_MAP()
 
 BOOL CSudokuMFCDlg::OnInitDialog()
@@ -70,7 +72,7 @@ void CSudokuMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 	int x = point.x / tile;
 	int y = point.y / tile;
 	Vec2 position(x, y);
-	userInterface.border.SetPosition(position);
+	userInterface.SetBorder(position);
 
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
@@ -100,7 +102,7 @@ void CSudokuMFCDlg::Draw()
 
 void CSudokuMFCDlg::OnBnClickedButton2()
 {
-	userInterface.SetField(Vec2(0, 0), '1');
+	userInterface.SetField(userInterface.GetLastMousePos(), '1');
 }
 
 void CSudokuMFCDlg::OnBnClickedButton5()
@@ -110,4 +112,19 @@ void CSudokuMFCDlg::OnBnClickedButton5()
 	{
 		pMainWnd->PostMessage(WM_CLOSE);
 	}
+}
+
+BOOL CSudokuMFCDlg::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		if (pMsg->wParam >= '0' && pMsg->wParam <= '9')
+		{
+			char key = (char)pMsg->wParam;
+			userInterface.SetField(userInterface.GetLastMousePos(), key);
+			return TRUE;
+		}
+	}
+
+	return CDialogEx::PreTranslateMessage(pMsg);
 }

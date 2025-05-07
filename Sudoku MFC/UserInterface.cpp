@@ -4,7 +4,7 @@
 
 bool UserInterface::Init(char* fields)
 {
-	framebuffer.Load("./sprites/sudoku.bmp");
+	framebuffer.Load("./sprites/white.bmp");
 
 	spriteList.SetWorkspace(&framebuffer);
 
@@ -40,7 +40,7 @@ bool UserInterface::Init(char* fields)
 
 	border.Init(spriteList);
 
-	border.SetPosition(Vec2(8, 8));
+	border.SetPosition(Vec2(0, 0));
 
 	return true;
 }
@@ -92,6 +92,21 @@ CSprite* UserInterface::GetSpriteFromPosition(Vec2 position)
 		}
 	}
 	return nullptr;
+}
+
+void UserInterface::SetBorder(const Vec2& pos)
+{
+	lastMousePos = pos;
+	if (lastMousePos.x < 0) { lastMousePos.x = 0; }
+	if (lastMousePos.x > 8) { lastMousePos.x = 8; }
+	if (lastMousePos.y < 0) { lastMousePos.y = 0; }
+	if (lastMousePos.y > 8) { lastMousePos.y = 8; }
+	border.SetPosition(lastMousePos);
+}
+
+Vec2 UserInterface::GetLastMousePos()
+{
+	return lastMousePos;
 }
 
 bool Border::Init(CSpriteList& spriteList)

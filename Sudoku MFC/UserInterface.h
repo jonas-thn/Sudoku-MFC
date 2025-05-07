@@ -42,17 +42,20 @@ public:
 	CSpriteList& GetSpriteList();
 	void SetField(Vec2 position, char number);
 	CSprite* LoadNumberSprite(int number);
-
 	CSprite* GetSpriteFromPosition(Vec2 position);
-
+	void SetBorder(const Vec2& pos);
+	Vec2 GetLastMousePos();
+	
+private:
 	Border border;
 	CDIB framebuffer;
-private:
 	CSprite sudokuBackground;
 
 	const Vec2 tileDimension = Vec2(50, 47);
 	const Vec2 offsets = Vec2(5, 10);
 	CSpriteList spriteList;
 	std::vector<SpriteData> spriteMap;
+
+	Vec2 lastMousePos = Vec2(0, 0);
 };
 
