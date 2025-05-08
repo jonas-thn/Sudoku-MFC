@@ -4,6 +4,7 @@
 #include <vector>
 #include "Vec2.h"
 #include <algorithm>
+#include "Undo.h"
 
 struct Border
 {
@@ -38,19 +39,24 @@ public:
 	UserInterface() = default;
 	~UserInterface() = default;
 
+	Vec2 ConvertPositionToCoordinates(Vec2 position);
+	Vec2 ConvertCoordinatesToPosition(Vec2 coordinates);
+
 	bool Init(char* fields);
 	CSpriteList& GetSpriteList();
-	void SetField(Vec2 position, char number);
+	void SetField(Vec2 position, char number, bool isUndo = false);
 	CSprite* LoadNumberSprite(int number);
 	CSprite* GetSpriteFromPosition(Vec2 position);
 	void SetBorder(const Vec2& pos);
 	Vec2 GetLastMousePos();
 	void CompleteUpdate(char* fields);
-	void ClearField(Vec2 position);
+	void ClearField(Vec2 position, bool isUndo = false);
 
 	char* GetTempFieldBuffer();
+	void TriggerUndo();
 	
 private:
+	Undo undo;
 	Border border;
 	CDIB framebuffer;
 	CSprite sudokuBackground;

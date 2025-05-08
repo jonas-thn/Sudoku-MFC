@@ -2,8 +2,20 @@
 #include "UserInterface.h"
 
 
+Vec2 UserInterface::ConvertPositionToCoordinates(Vec2 position)
+{
+	return Vec2(position.x * tileDimension.x, position.y * tileDimension.y);
+}
+
+Vec2 UserInterface::ConvertCoordinatesToPosition(Vec2 coordinates)
+{
+	return Vec2(coordinates.x / tileDimension.x, coordinates.y / tileDimension.y);
+}
+
 bool UserInterface::Init(char* fields)
 {
+	undo.ClearUndo();
+
 	tempFieldBuffer.resize(WIDTH * HEIGHT);
 
 	framebuffer.Load("./sprites/white.bmp");
@@ -28,6 +40,7 @@ bool UserInterface::Init(char* fields)
 			int index = x + (y * WIDTH);
 			char field = fields[index];
 			int number = field - '0'; 
+			undo.AddUndo(Vec2(x, y), field);
 			tempFieldBuffer.at(index) = field;
 			if (number == 0)
 			{
@@ -53,7 +66,7 @@ CSpriteList& UserInterface::GetSpriteList()
 	return spriteList;
 }
 
-void UserInterface::SetField(Vec2 position, char number)
+void UserInterface::SetField(Vec2 position, char number, bool isUndo)
 {
 	CSprite* numberSprite = LoadNumberSprite(number - '0');
 	CSprite* existingSprite = GetSpriteFromPosition(position);
@@ -65,6 +78,10 @@ void UserInterface::SetField(Vec2 position, char number)
 	spriteMap.at(index) = SpriteData(numberSprite, position, number);
 	numberSprite->SetPosition(position.x * tileDimension.x + offsets.x, position.y * tileDimension.y + offsets.y);
 
+	if (!isUndo)
+	{
+		undo.AddUndo(position, tempFieldBuffer.at(index));
+	}
 	tempFieldBuffer.at(index) = number;
 }
 
@@ -134,7 +151,7 @@ void UserInterface::CompleteUpdate(char* fields)
 	}
 }
 
-void UserInterface::ClearField(Vec2 position)
+void UserInterface::ClearField(Vec2 position, bool isUndo)
 {
 	CSprite* existingSprite = GetSpriteFromPosition(position);
 	if (existingSprite != nullptr)
@@ -144,12 +161,32 @@ void UserInterface::ClearField(Vec2 position)
 	int index = position.x + (position.y * WIDTH);
 	spriteMap.at(index) = SpriteData(nullptr, position, 0);
 
+	if(!isUndo)
+	{
+		undo.AddUndo(position, tempFieldBuffer.at(index));
+	}
 	tempFieldBuffer.at(index) = '0';
 }
 
 char* UserInterface::GetTempFieldBuffer()
 {
 	return tempFieldBuffer.data();
+}
+
+void UserInterface::TriggerUndo()
+{
+	UndoField undoField;
+	if(undo.UndoLast(tempFieldBuffer.data(), undoField))
+	{
+		if (undoField.number == '0')
+		{
+			ClearField(Vec2(undoField.x, undoField.y), true);
+		}
+		else
+		{
+			SetField(Vec2(undoField.x, undoField.y), undoField.number, true);
+		}
+	}
 }
 
 bool Border::Init(CSpriteList& spriteList)

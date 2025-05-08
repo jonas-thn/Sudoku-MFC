@@ -3,10 +3,12 @@
 #include <string>
 #include "UserInterface.h"
 #include "Sudoku.h"
+#include "Undo.h"
 
 class CSudokuMFCDlg : public CDialogEx
 {
 public:
+	
 	CSudokuMFCDlg(CWnd* pParent = nullptr, Difficulty difficulty = Difficulty::Easy);
 
 #ifdef AFX_DESIGN_TIME

@@ -81,11 +81,7 @@ void CSudokuMFCDlg::OnPaint()
 void CSudokuMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	//w: 453 h:435
-	int tile = 50;
-
-	int x = point.x / tile;
-	int y = point.y / tile;
-	Vec2 position(x, y);
+	Vec2 position = userInterface.ConvertCoordinatesToPosition(Vec2(point.x, point.y));
 	userInterface.SetBorder(position);
 
 	CDialogEx::OnLButtonDown(nFlags, point);
@@ -172,7 +168,7 @@ void CSudokuMFCDlg::OnBnClickedButton6()
 //UNDO
 void CSudokuMFCDlg::OnBnClickedButton3()
 {
-	
+	userInterface.TriggerUndo();
 }
 
 //SOLVE
