@@ -7,7 +7,7 @@
 class CSudokuMFCDlg : public CDialogEx
 {
 public:
-	CSudokuMFCDlg(CWnd* pParent = nullptr);	
+	CSudokuMFCDlg(CWnd* pParent = nullptr, Difficulty difficulty = Difficulty::Easy);
 
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_SUDOKU_MFC_DIALOG };
@@ -34,6 +34,7 @@ public:
 private:
 	void Update();
 	void Draw();
+	Difficulty difficulty = Difficulty::Easy;
 public:
 	afx_msg void OnBnClickedButton5();
 	afx_msg void OnBnClickedButton2();

@@ -7,10 +7,12 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+#include "MenuMFC.h"
 
-CSudokuMFCDlg::CSudokuMFCDlg(CWnd* pParent)
+CSudokuMFCDlg::CSudokuMFCDlg(CWnd* pParent, Difficulty difficulty)
 	: CDialogEx(IDD_SUDOKU_MFC_DIALOG, pParent)
 {
+	this->difficulty = difficulty;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
@@ -42,14 +44,24 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 	style &= ~WS_THICKFRAME;  //resize frame negieren / deaktivieren       
 	SetWindowLongPtr(m_hWnd, GWL_STYLE, style);
 
-	sudoku.Init();
-	sudoku.LoadFromFile("./sudokus/Sudoku1.txt", "./sudokus/Sudoku1_Save.txt", Difficulty::Easy);
+	sudoku.Init(difficulty);
+	sudoku.LoadFromFile();
 	userInterface.Init(sudoku.GetFields());
 
 	SetWindowPos(nullptr, 0, 0, 469, 570, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 	MoveWindow(0, 0, 469, 570, TRUE);
 
 	SetTimer(1, 100, nullptr);
+
+	//Menü schließen
+	CWnd* pMainWnd = AfxGetMainWnd();
+	if (pMainWnd)
+	{
+		pMainWnd->PostMessage(WM_CLOSE);
+	}
+
+	//Sudoku zu neuem main window machen
+	AfxGetApp()->m_pMainWnd = this;
 
 	return TRUE; 
 }
@@ -136,13 +148,25 @@ void CSudokuMFCDlg::OnBnClickedButton2()
 void CSudokuMFCDlg::OnBnClickedButton1()
 {
 	sudoku.FillFieldBuffer(userInterface.GetTempFieldBuffer());
-	sudoku.SaveToFile("./sudokus/Sudoku1_Save.txt");
+	sudoku.SaveToFile();
 }
 
 //LOAD
 void CSudokuMFCDlg::OnBnClickedButton6()
 {
-	
+	MenuMFC dlg;
+
+	CWnd* pMainWnd = AfxGetMainWnd();
+	if (pMainWnd)
+	{
+		pMainWnd->PostMessage(WM_CLOSE);
+	}
+
+	//Menu zu neuem main window machen
+	AfxGetApp()->m_pMainWnd = &dlg;
+
+	INT_PTR nResponse = dlg.DoModal();
+
 }
 
 //UNDO

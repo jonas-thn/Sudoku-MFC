@@ -51,6 +51,9 @@
     <ClInclude Include="Vec2.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="MenuMFC.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sudoku MFC.cpp">
@@ -75,6 +78,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Undo.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuMFC.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

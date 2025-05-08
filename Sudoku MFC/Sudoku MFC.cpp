@@ -2,6 +2,7 @@
 #include "framework.h"
 #include "Sudoku MFCDlg.h"
 #include "Sudoku MFC.h"
+#include "MenuMFC.h"	
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -22,9 +23,9 @@ BOOL CSudokuMFCApp::InitInstance()
 {
 	CWinApp::InitInstance();
 
-	CSudokuMFCDlg dlg;
-	m_pMainWnd = &dlg;
-	INT_PTR nResponse = dlg.DoModal();
+	MenuMFC menu;
+	m_pMainWnd = &menu;
+	INT_PTR nResponse = menu.DoModal();
 
 #if !defined(_AFXDLL) && !defined(_AFX_NO_MFC_CONTROLS_IN_DIALOGS)
 	ControlBarCleanUp();
@@ -32,4 +33,6 @@ BOOL CSudokuMFCApp::InitInstance()
 
 	return FALSE;
 }
+
+
 

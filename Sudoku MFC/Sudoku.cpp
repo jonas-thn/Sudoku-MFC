@@ -7,7 +7,7 @@ Sudoku::~Sudoku()
 	delete[] editFields;
 }
 
-bool Sudoku::Init()
+bool Sudoku::Init(Difficulty difficulty)
 {
 	fields = new char[WIDTH * HEIGHT];
 	if (fields == nullptr)
@@ -29,10 +29,7 @@ bool Sudoku::Init()
 		editFields[i] = '0';
 	}
 
-	currentFileData = 
-	{
-		"", "", Difficulty::Unknown
-	};
+	LoadFileData(difficulty);	
 
 	return true;
 }
@@ -94,8 +91,11 @@ int Sudoku::GetBufferLength()
 	return WIDTH * HEIGHT;
 }
 
-bool Sudoku::LoadFromFile(std::string original, std::string save, Difficulty difficulty)
+bool Sudoku::LoadFromFile()
 {
+	std::string original = currentFileData.original;
+	std::string save = currentFileData.save;
+
 	std::ifstream saveFile(save);
 	if (!saveFile) 
 	{
@@ -131,18 +131,13 @@ bool Sudoku::LoadFromFile(std::string original, std::string save, Difficulty dif
 	}
 	originalFile.close();
 
-	currentFileData = 
-	{
-		original,
-		save,
-		difficulty
-	};
-
 	return true;
 }
 
-bool Sudoku::SaveToFile(std::string save)
+bool Sudoku::SaveToFile()
 {
+	std::string save = currentFileData.save;
+
 	std::ofstream saveFile(save);
 	if (!saveFile) 
 	{
@@ -161,4 +156,26 @@ bool Sudoku::SaveToFile(std::string save)
 
 	saveFile.close();
 	return true; 
+}
+
+void Sudoku::LoadFileData(Difficulty difficulty)
+{
+	switch (difficulty)
+	{
+	case Difficulty::Easy:
+		currentFileData = { "./sudokus/Sudoku1.txt", "./sudokus/Sudoku1_Save.txt", Difficulty::Easy };
+		break;
+	case Difficulty::Medium:
+		currentFileData = { "./sudokus/Sudoku2.txt", "./sudokus/Sudoku2_Save.txt", Difficulty::Medium };
+		break;
+	case Difficulty::Hard:
+		currentFileData = { "./sudokus/Sudoku3.txt", "./sudokus/Sudoku3_Save.txt", Difficulty::Hard };
+		break;
+	case Difficulty::Impossible:
+		currentFileData = { "./sudokus/Sudoku4.txt", "./sudokus/Sudoku4_Save.txt", Difficulty::Impossible };
+		break;
+	case Difficulty::Generated:
+		currentFileData = { "./sudokus/Sudoku5.txt", "./sudokus/Sudoku5_Save.txt", Difficulty::Generated };
+		break;
+	}
 }

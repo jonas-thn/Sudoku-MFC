@@ -7,7 +7,6 @@
 
 enum class Difficulty : int
 {
-	Unknown,
 	Easy,
 	Medium,
 	Hard,
@@ -27,7 +26,7 @@ class Sudoku
 public:
 	Sudoku() = default;
 	~Sudoku();
-	bool Init();
+	bool Init(Difficulty difficulty);
 
 	void SetField(Vec2 position, char number);
 	int GetField(Vec2 position);
@@ -42,8 +41,10 @@ public:
 	void ClearSudoku();
 	int GetBufferLength();
 
-	bool LoadFromFile(std::string original, std::string save, Difficulty difficulty);
-	bool SaveToFile(std::string save);
+	bool LoadFromFile();
+	bool SaveToFile();
+
+	void LoadFileData(Difficulty difficulty);	
 
 private:
 	const int WIDTH = 9;
