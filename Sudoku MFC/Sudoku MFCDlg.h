@@ -4,6 +4,7 @@
 #include "UserInterface.h"
 #include "Sudoku.h"
 #include "Undo.h"
+#include "Solver.h"
 
 class CSudokuMFCDlg : public CDialogEx
 {
@@ -28,6 +29,7 @@ protected:
 
 	Sudoku sudoku;
 	UserInterface userInterface;
+	Solver solver;
 
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

@@ -185,6 +185,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="MenuMFC.h" />
+    <ClInclude Include="Solver.h" />
     <ClInclude Include="Sudoku.h" />
     <ClInclude Include="Undo.h" />
     <ClInclude Include="UserInterface.h" />
@@ -200,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MenuMFC.cpp" />
+    <ClCompile Include="Solver.cpp" />
     <ClCompile Include="Sudoku.cpp" />
     <ClCompile Include="Undo.cpp" />
     <ClCompile Include="UserInterface.cpp" />

@@ -47,6 +47,7 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 	sudoku.Init(difficulty);
 	sudoku.LoadFromFile();
 	userInterface.Init(sudoku.GetFields());
+	solver.Init(sudoku.GetCurrentFileData().original);
 
 	SetWindowPos(nullptr, 0, 0, 469, 570, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 	MoveWindow(0, 0, 469, 570, TRUE);
@@ -174,5 +175,6 @@ void CSudokuMFCDlg::OnBnClickedButton3()
 //SOLVE
 void CSudokuMFCDlg::OnBnClickedButton4()
 {
-	
+	solver.SolveSudoku();
+	userInterface.CompleteUpdate(solver.GetBuffer());
 }

@@ -179,3 +179,8 @@ void Sudoku::LoadFileData(Difficulty difficulty)
 		break;
 	}
 }
+
+FileData Sudoku::GetCurrentFileData()
+{
+	return currentFileData;
+}

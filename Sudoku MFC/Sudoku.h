@@ -5,6 +5,11 @@
 #include <iostream>
 #include <map>
 
+//const correctnis
+//references
+//safe ptr
+//
+
 enum class Difficulty : int
 {
 	Easy,
@@ -45,6 +50,7 @@ public:
 	bool SaveToFile();
 
 	void LoadFileData(Difficulty difficulty);	
+	FileData GetCurrentFileData();
 
 private:
 	const int WIDTH = 9;
