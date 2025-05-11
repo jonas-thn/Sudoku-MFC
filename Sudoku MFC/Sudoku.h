@@ -5,10 +5,13 @@
 #include <iostream>
 #include <map>
 
-//const correctnis
+//generator
+//const correctness
 //references
 //safe ptr
-//
+//exceptions
+//singleton pattern
+//lambda function
 
 enum class Difficulty : int
 {

@@ -28,6 +28,8 @@ bool Solver::Init(std::string original)
 		}
 	}
 	file.close();
+
+	return true;
 }
 
 void Solver::SetField(int x, int y, char number)

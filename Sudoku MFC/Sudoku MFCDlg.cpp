@@ -31,6 +31,7 @@ BEGIN_MESSAGE_MAP(CSudokuMFCDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON6, &CSudokuMFCDlg::OnBnClickedButton6)
 	ON_BN_CLICKED(IDC_BUTTON3, &CSudokuMFCDlg::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CSudokuMFCDlg::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON7, &CSudokuMFCDlg::OnBnClickedButton7)
 END_MESSAGE_MAP()
 
 BOOL CSudokuMFCDlg::OnInitDialog()
@@ -48,6 +49,7 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 	sudoku.LoadFromFile();
 	userInterface.Init(sudoku.GetFields());
 	solver.Init(sudoku.GetCurrentFileData().original);
+	generator.Init();
 
 	SetWindowPos(nullptr, 0, 0, 469, 570, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 	MoveWindow(0, 0, 469, 570, TRUE);
@@ -63,6 +65,15 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 
 	//Sudoku zu neuem main window machen
 	AfxGetApp()->m_pMainWnd = this;
+
+	if (sudoku.GetCurrentFileData().difficulty == Difficulty::Generated)
+	{
+		GetDlgItem(IDC_BUTTON7)->EnableWindow(TRUE);
+	}
+	else
+	{
+		GetDlgItem(IDC_BUTTON7)->EnableWindow(FALSE);
+	}
 
 	return TRUE; 
 }
@@ -164,6 +175,15 @@ void CSudokuMFCDlg::OnBnClickedButton6()
 
 	INT_PTR nResponse = dlg.DoModal();
 
+	if (sudoku.GetCurrentFileData().difficulty == Difficulty::Generated)
+	{
+		GetDlgItem(IDC_BUTTON7)->EnableWindow(TRUE);
+	}
+	else
+	{
+		GetDlgItem(IDC_BUTTON7)->EnableWindow(FALSE);
+	}
+
 }
 
 //UNDO
@@ -177,4 +197,11 @@ void CSudokuMFCDlg::OnBnClickedButton4()
 {
 	solver.SolveSudoku();
 	userInterface.CompleteUpdate(solver.GetBuffer());
+}
+
+//GENERATE
+void CSudokuMFCDlg::OnBnClickedButton7()
+{
+	generator.GenerateSudoku(1);
+	userInterface.CompleteUpdate(generator.GetBuffer());
 }
