@@ -164,6 +164,15 @@ void CSudokuMFCDlg::OnBnClickedButton6()
 {
 	MenuMFC dlg;
 
+	if (sudoku.GetCurrentFileData().difficulty == Difficulty::Generated)
+	{
+		GetDlgItem(IDC_BUTTON7)->EnableWindow(TRUE);
+	}
+	else
+	{
+		GetDlgItem(IDC_BUTTON7)->EnableWindow(FALSE);
+	}
+
 	CWnd* pMainWnd = AfxGetMainWnd();
 	if (pMainWnd)
 	{
@@ -174,16 +183,6 @@ void CSudokuMFCDlg::OnBnClickedButton6()
 	AfxGetApp()->m_pMainWnd = &dlg;
 
 	INT_PTR nResponse = dlg.DoModal();
-
-	if (sudoku.GetCurrentFileData().difficulty == Difficulty::Generated)
-	{
-		GetDlgItem(IDC_BUTTON7)->EnableWindow(TRUE);
-	}
-	else
-	{
-		GetDlgItem(IDC_BUTTON7)->EnableWindow(FALSE);
-	}
-
 }
 
 //UNDO
@@ -202,6 +201,6 @@ void CSudokuMFCDlg::OnBnClickedButton4()
 //GENERATE
 void CSudokuMFCDlg::OnBnClickedButton7()
 {
-	generator.GenerateSudoku(1);
+	generator.GenerateSudoku(3);
 	userInterface.CompleteUpdate(generator.GetBuffer());
 }

@@ -4,7 +4,8 @@
 
 bool Generator::Init()
 {
-    Random::Seed();
+	Random::Seed();
+
     if (!solver.Init("./sudokus/GeneratorTemplate.txt"))
     {
         return false;
@@ -60,7 +61,7 @@ void Generator::GenerateSudoku(int difficulty)
 			fields[i] = tempBuffer2[i];
 		}
 
-		for (int i = 0; i < numToDelete;) 
+		for (int i = 0; i < numToDelete;i++) 
 		{
 			int x = Random::Range(0, 8);
 			int y = Random::Range(0, 8); 
@@ -86,6 +87,11 @@ void Generator::GenerateSudoku(int difficulty)
 			}
 		}
 	}
+
+	/*for (int i = 0; i < 10; i++)
+	{
+		SetField(i, i, '0');
+	}*/
 
 	delete[] tempBuffer1;
 	delete[] tempBuffer2;

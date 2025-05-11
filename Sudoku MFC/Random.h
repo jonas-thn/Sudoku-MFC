@@ -13,7 +13,6 @@ public:
 	//min and max inclusive
     static int Range(int min, int max) 
     {
-        std::srand(static_cast<unsigned>(std::time(nullptr)));
         return min + std::rand() % (max - min + 1);
     }
 
