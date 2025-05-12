@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "UserInterface.h"
+#include "CustomExceptions.h"
 
 
 Vec2 UserInterface::ConvertPositionToCoordinates(const Vec2& position)
@@ -12,20 +13,22 @@ Vec2 UserInterface::ConvertCoordinatesToPosition(const Vec2& coordinates)
 	return Vec2(coordinates.x / tileDimension.x, coordinates.y / tileDimension.y);
 }
 
-bool UserInterface::Init(const char* fields)
+void UserInterface::Init(const char* fields)
 {
 	undo.ClearUndo();
 
 	tempFieldBuffer.resize(WIDTH * HEIGHT);
 
-	framebuffer.Load("./sprites/white.bmp");
+	if(!framebuffer.Load("./sprites/white.bmp"))
+	{
+		throw SpriteLoadException("Error loading framebuffer!");
+	}
 
 	spriteList.SetWorkspace(&framebuffer);
 
 	if (!sudokuBackground.Load("./sprites/sudoku.bmp"))
 	{
-		AfxMessageBox(L"Error loading sudoku background!");
-		return false;
+		throw SpriteLoadException("Error loading sudoku.bmp!");
 	}
 	sudokuBackground.SetZ(0);
 	sudokuBackground.SetPosition(0, 0);
@@ -57,8 +60,6 @@ bool UserInterface::Init(const char* fields)
 	border.Init(spriteList);
 
 	border.SetPosition(Vec2(0, 0));
-
-	return true;
 }
 
 CSpriteList& UserInterface::GetSpriteList()
@@ -95,8 +96,7 @@ CSprite* UserInterface::LoadNumberSprite(int number)
 	if (!numberSprite->Load(path.data(), CSize(40, 40)))
 	{
 		delete numberSprite;
-		AfxMessageBox(L"Error loading number sprite!");
-		return nullptr;
+		throw SpriteLoadException("Error loading sprite: " + numberPath);
 	}
 	numberSprite->SetZ(10);
 	numberSprite->SetPosition(-100, -100);

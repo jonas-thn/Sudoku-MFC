@@ -2,18 +2,24 @@
 #include "Generator.h"
 
 
-bool Generator::Init()
+void Generator::Init()
 {
 	//Random::Seed();
 
-    if (!solver.Init("./sudokus/GeneratorTemplate.txt"))
-    {
-        return false;
-    }
+	try
+	{
+		solver.Init("./sudokus/GeneratorTemplate.txt");
+	}
+	catch (const MemoryAllocationException& memE)
+	{
+		throw MemoryAllocationException(memE.what());
+	}
+	catch (const FileStreamException& fileE)
+	{
+		throw FileStreamException(fileE.what());
+	}
     
     fields = solver.GetBuffer();
-
-    return true;
 }
 
 void Generator::SetField(const Vec2& position, char number)
@@ -43,8 +49,19 @@ void Generator::GenerateSudoku(int difficulty)
 {
 	GenerateFilledSudoku(); 
 
-	char* tempBuffer1 = new char[WIDTH * HEIGHT];
-	char* tempBuffer2 = new char[WIDTH * HEIGHT];
+	std::unique_ptr<char[]> tempBuffer1;
+	std::unique_ptr<char[]> tempBuffer2;
+
+	try
+	{
+		tempBuffer1 = std::make_unique<char[]>(WIDTH * HEIGHT);
+		tempBuffer2 = std::make_unique<char[]>(WIDTH * HEIGHT);
+
+	}
+	catch (const std::bad_alloc& e)
+	{
+		throw MemoryAllocationException("Error allocating memory for tempBuffer in generator!");
+	}
 
 	for (int i = 0; i < WIDTH * HEIGHT; i++) 
 	{
@@ -87,9 +104,6 @@ void Generator::GenerateSudoku(int difficulty)
 			}
 		}
 	}
-
-	delete[] tempBuffer1;
-	delete[] tempBuffer2;
 }
 
 void Generator::GenerateFilledSudoku()

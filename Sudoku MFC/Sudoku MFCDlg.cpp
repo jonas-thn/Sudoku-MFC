@@ -201,6 +201,6 @@ void CSudokuMFCDlg::OnBnClickedButton4()
 //GENERATE
 void CSudokuMFCDlg::OnBnClickedButton7()
 {
-	generator.GenerateSudoku(3);
+	generator.GenerateSudoku(5);
 	userInterface.CompleteUpdate(generator.GetBuffer());
 }

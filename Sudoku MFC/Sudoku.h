@@ -4,8 +4,8 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include "CustomExceptions.h"
 
-//safe ptr
 //exceptions
 //show static fields
 
@@ -31,7 +31,7 @@ public:
 	Sudoku() = default;
 	~Sudoku();
 
-	bool Init(Difficulty difficulty);
+	void Init(Difficulty difficulty);
 
 	void SetField(const Vec2& position, char number);
 	int GetField(const Vec2& position) const;
@@ -45,8 +45,8 @@ public:
 	void ClearSudoku();
 	int GetBufferLength() const;
 
-	bool LoadFromFile();
-	bool SaveToFile();
+	void LoadFromFile();
+	void SaveToFile();
 
 	void LoadFileData(Difficulty difficulty);	
 	FileData GetCurrentFileData() const;

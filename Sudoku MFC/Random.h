@@ -5,15 +5,11 @@
 class Random 
 {
 public:
+    //singleton pattern damit seed automatisch initialisiert wird
     static Random& GetInstance()
     {
 		static Random instance; 
 		return instance;       
-    }
-
-    void Seed()
-    {
-        std::srand(static_cast<unsigned>(std::time(nullptr)));
     }
 
 	//min and max inclusive
@@ -31,5 +27,11 @@ public:
     }
 
 private:
-    Random() = default;
+    Random()
+    {
+        std::srand(static_cast<unsigned>(std::time(nullptr)));
+    }
+
+    Random(const Random&) = delete;
+    Random& operator=(const Random&) = delete;
 };

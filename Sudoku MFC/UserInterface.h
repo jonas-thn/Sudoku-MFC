@@ -42,7 +42,7 @@ public:
 	Vec2 ConvertPositionToCoordinates(const Vec2& position);
 	Vec2 ConvertCoordinatesToPosition(const Vec2& coordinates);
 
-	bool Init(const char* fields);
+	void Init(const char* fields);
 
 	void SetField(const Vec2& position, char number, bool isUndo = false);
 	void ClearField(const Vec2& position, bool isUndo = false);

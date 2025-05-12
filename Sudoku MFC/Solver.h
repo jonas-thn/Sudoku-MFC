@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include "Vec2.h"
+#include "CustomExceptions.h"
 
 struct EmptyField
 {
@@ -18,7 +19,7 @@ public:
 	Solver() = default;
 	~Solver();
 
-	bool Init(const std::string& original);
+	void Init(const std::string& original);
 	void SetField(const Vec2& position, char number);
 	char GetField(const Vec2& position) const;
 	char* GetBuffer();

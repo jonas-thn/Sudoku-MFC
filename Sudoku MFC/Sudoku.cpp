@@ -7,20 +7,18 @@ Sudoku::~Sudoku()
 	delete[] editFields;
 }
 
-bool Sudoku::Init(Difficulty difficulty)
+void Sudoku::Init(Difficulty difficulty)
 {
 	fields = new char[WIDTH * HEIGHT];
 	if (fields == nullptr)
 	{
-		AfxMessageBox(L"Error allocating memory for fields!");
-		return false;
+		throw MemoryAllocationException("Error allocating memory for fields!");
 	}
 
 	editFields = new char[WIDTH * HEIGHT];
 	if (editFields == nullptr)
 	{
-		AfxMessageBox(L"Error allocating memory for edit fields!");
-		return false;
+		throw MemoryAllocationException("Error allocating memory for edit fields!");
 	}
 
 	for (int i = 0; i < WIDTH * HEIGHT; i++)
@@ -30,8 +28,6 @@ bool Sudoku::Init(Difficulty difficulty)
 	}
 
 	LoadFileData(difficulty);	
-
-	return true;
 }
 
 void Sudoku::SetField(const Vec2& position, char number)
@@ -91,7 +87,7 @@ int Sudoku::GetBufferLength() const
 	return WIDTH * HEIGHT;
 }
 
-bool Sudoku::LoadFromFile()
+void Sudoku::LoadFromFile()
 {
 	std::string original = currentFileData.original;
 	std::string save = currentFileData.save;
@@ -99,8 +95,7 @@ bool Sudoku::LoadFromFile()
 	std::ifstream saveFile(save);
 	if (!saveFile) 
 	{
-		AfxMessageBox(L"Error loading save file!");
-		return false;
+		throw FileStreamException("Error loading save file!");
 	}
 
 	char temp;
@@ -118,8 +113,8 @@ bool Sudoku::LoadFromFile()
 	std::ifstream originalFile(original);
 	if (!originalFile) 
 	{
-		AfxMessageBox(L"Error loading original file!");
-		return false;
+		throw FileStreamException("Error loading original file!");
+
 	}
 
 	while (originalFile.get(temp)) 
@@ -130,19 +125,16 @@ bool Sudoku::LoadFromFile()
 		}
 	}
 	originalFile.close();
-
-	return true;
 }
 
-bool Sudoku::SaveToFile()
+void Sudoku::SaveToFile()
 {
 	std::string save = currentFileData.save;
 
 	std::ofstream saveFile(save);
 	if (!saveFile) 
 	{
-		AfxMessageBox(L"Error saving sudoku!");
-		return false;
+		throw FileStreamException("Error saving sudoku!");
 	}
 
 	for (int i = 0; i < WIDTH * HEIGHT; ++i) 
@@ -155,7 +147,6 @@ bool Sudoku::SaveToFile()
 	}
 
 	saveFile.close();
-	return true; 
 }
 
 void Sudoku::LoadFileData(Difficulty difficulty)

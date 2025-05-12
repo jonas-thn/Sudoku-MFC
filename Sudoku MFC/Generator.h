@@ -4,6 +4,7 @@
 #include "Solver.h"
 #include <string>
 #include "Vec2.h"
+#include <memory>
 
 class Generator
 {
@@ -11,7 +12,7 @@ public:
 	Generator() = default;
 	~Generator() = default;
 
-	bool Init();
+	void Init();
 
 	void SetField(const Vec2& position, char number);
 	char GetField(const Vec2& position) const;

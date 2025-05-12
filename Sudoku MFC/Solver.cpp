@@ -6,21 +6,19 @@ Solver::~Solver()
 	delete[] fields;
 }
 
-bool Solver::Init(const std::string& original)
+void Solver::Init(const std::string& original)
 {
 	fields = new char[WIDTH * HEIGHT];
 	
 	if (!fields)
 	{
-		AfxMessageBox(L"Error allocating memory for fields!");
-		return false;
+		throw MemoryAllocationException("Error allocating memory for fields!");
 	}
 
 	std::ifstream file(original);
 	if (!file)
 	{
-		AfxMessageBox(L"Error loading solver file!");
-		return false;
+		throw FileStreamException("Error loading solver file!");
 	}
 
 	char temp;
@@ -33,8 +31,6 @@ bool Solver::Init(const std::string& original)
 		}
 	}
 	file.close();
-
-	return true;
 }
 
 void Solver::SetField(const Vec2& position, char number)
