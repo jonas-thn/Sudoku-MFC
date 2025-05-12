@@ -3,6 +3,7 @@
 #include "Random.h"
 #include "Solver.h"
 #include <string>
+#include "Vec2.h"
 
 class Generator
 {
@@ -12,8 +13,8 @@ public:
 
 	bool Init();
 
-	void SetField(int x, int y, char number);
-	char GetField(int x, int y);
+	void SetField(const Vec2& position, char number);
+	char GetField(const Vec2& position) const;
 
 	void ClearBuffer();
 	char* GetBuffer();

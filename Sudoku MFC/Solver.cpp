@@ -1,7 +1,12 @@
 #include "pch.h"
 #include "Solver.h"
 
-bool Solver::Init(std::string original)
+Solver::~Solver()
+{
+	delete[] fields;
+}
+
+bool Solver::Init(const std::string& original)
 {
 	fields = new char[WIDTH * HEIGHT];
 	
@@ -37,7 +42,7 @@ void Solver::SetField(const Vec2& position, char number)
 	fields[position.y * WIDTH + position.x] = number;
 }
 
-char Solver::GetField(const Vec2& position)
+char Solver::GetField(const Vec2& position) const
 {
 	return fields[position.y * WIDTH + position.x];
 }
@@ -47,7 +52,7 @@ char* Solver::GetBuffer()
 	return fields;
 }
 
-bool Solver::NumberInRow(int row, char number)
+bool Solver::NumberInRow(int row, char number) const
 {
 	for (int x = 0; x < WIDTH; x++)
 	{
@@ -60,7 +65,7 @@ bool Solver::NumberInRow(int row, char number)
 	return false;
 }
 
-bool Solver::NumberInColumn(int column, char number)
+bool Solver::NumberInColumn(int column, char number) const
 {
 	for (int y = 0; y < HEIGHT; y++)
 	{
@@ -73,7 +78,7 @@ bool Solver::NumberInColumn(int column, char number)
 	return false;
 }
 
-bool Solver::NumberIn3x3(const Vec2& position, char number)
+bool Solver::NumberIn3x3(const Vec2& position, char number) const
 {
 	int xBox = position.x / (int)BOX; 
 	int yBox = position.y / (int)BOX; 
@@ -97,7 +102,7 @@ bool Solver::NumberIn3x3(const Vec2& position, char number)
 	return false; 
 }
 
-bool Solver::CanPlaceNumber(const Vec2& position, char number)
+bool Solver::CanPlaceNumber(const Vec2& position, char number) const
 {
 	int rowTest = !NumberInRow(position.y, number); 
 	int columnTest = !NumberInColumn(position.x, number); 
@@ -108,6 +113,8 @@ bool Solver::CanPlaceNumber(const Vec2& position, char number)
 
 int Solver::FindEmptyFields()
 {
+	emptyFields.clear();
+
 	int count = 0;
 
 	for (int y = 0; y < HEIGHT; y++) 

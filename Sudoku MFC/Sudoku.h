@@ -5,12 +5,9 @@
 #include <iostream>
 #include <map>
 
-//const correctness
-//references
 //safe ptr
 //exceptions
-//singleton pattern
-//lambda function
+//show static fields
 
 enum class Difficulty : int
 {

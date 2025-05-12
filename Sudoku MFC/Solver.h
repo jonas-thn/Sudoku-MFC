@@ -16,18 +16,17 @@ class Solver
 {
 public:
 	Solver() = default;
-	~Solver() = default;
+	~Solver();
 
-	bool Init(std::string original);
+	bool Init(const std::string& original);
 	void SetField(const Vec2& position, char number);
-	char GetField(const Vec2& position);
+	char GetField(const Vec2& position) const;
 	char* GetBuffer();
 
-	bool NumberInRow(int row, char number);
-	bool NumberInColumn(int column, char number);
-	bool NumberIn3x3(const Vec2& position, char number);
-
-	bool CanPlaceNumber(const Vec2& position, char number);
+	bool NumberInRow(int row, char number) const;
+	bool NumberInColumn(int column, char number) const;
+	bool NumberIn3x3(const Vec2& position, char number) const;
+	bool CanPlaceNumber(const Vec2& position, char number) const;
 
 	int FindEmptyFields();
 

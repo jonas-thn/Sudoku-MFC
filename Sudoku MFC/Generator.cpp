@@ -4,7 +4,7 @@
 
 bool Generator::Init()
 {
-	Random::Seed();
+	//Random::Seed();
 
     if (!solver.Init("./sudokus/GeneratorTemplate.txt"))
     {
@@ -16,14 +16,14 @@ bool Generator::Init()
     return true;
 }
 
-void Generator::SetField(int x, int y, char number)
+void Generator::SetField(const Vec2& position, char number)
 {
-	fields[y * WIDTH + x] = number;
+	fields[position.y * WIDTH + position.x] = number;
 }
 
-char Generator::GetField(int x, int y)
+char Generator::GetField(const Vec2& position) const
 {
-	return fields[y * WIDTH + x];
+	return fields[position.y * WIDTH + position.x];
 }
 
 void Generator::ClearBuffer()
@@ -63,11 +63,11 @@ void Generator::GenerateSudoku(int difficulty)
 
 		for (int i = 0; i < numToDelete;i++) 
 		{
-			int x = Random::Range(0, 8);
-			int y = Random::Range(0, 8); 
-			if (GetField(x, y) != '0')
+			int x = Random::GetInstance().Range(0, 8);
+			int y = Random::GetInstance().Range(0, 8);
+			if (GetField(Vec2(x, y)) != '0')
 			{
-				SetField(x, y, '0');
+				SetField(Vec2(x, y), '0');
 				i++;
 			}
 		}
@@ -103,13 +103,13 @@ void Generator::GenerateFilledSudoku()
 
 		for (int i = 0; i < maxTries; i++)
 		{
-			char element = Random::Char1To9();
-			int x = Random::Range(0, 8);
-			int y = Random::Range(0, 8);
+			char element = Random::GetInstance().Char1To9();
+			int x = Random::GetInstance().Range(0, 8);
+			int y = Random::GetInstance().Range(0, 8);
 
 			if (solver.CanPlaceNumber(Vec2(x, y), element))
 			{
-				SetField(x, y, element);
+				SetField(Vec2(x, y), element);
 			}
 		}
 
