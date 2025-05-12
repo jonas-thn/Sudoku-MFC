@@ -9,7 +9,7 @@ Solver::~Solver()
 void Solver::Init(const std::string& original)
 {
 	fields = new char[WIDTH * HEIGHT];
-	
+
 	if (!fields)
 	{
 		throw MemoryAllocationException("Error allocating memory for fields!");

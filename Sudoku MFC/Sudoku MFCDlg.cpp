@@ -45,11 +45,19 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 	style &= ~WS_THICKFRAME;  //resize frame negieren / deaktivieren       
 	SetWindowLongPtr(m_hWnd, GWL_STYLE, style);
 
-	sudoku.Init(difficulty);
-	sudoku.LoadFromFile();
-	userInterface.Init(sudoku.GetFields());
-	solver.Init(sudoku.GetCurrentFileData().original);
-	generator.Init();
+	try
+	{
+		sudoku.Init(difficulty);
+		sudoku.LoadFromFile();
+		userInterface.Init(sudoku.GetFields());
+		solver.Init(sudoku.GetCurrentFileData().original);
+		generator.Init();
+	}
+	catch (const std::exception& e)
+	{
+		MessageBoxA(nullptr, e.what(), "Error", MB_OK | MB_ICONERROR);
+		::PostQuitMessage(1);
+	}
 
 	SetWindowPos(nullptr, 0, 0, 469, 570, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 	MoveWindow(0, 0, 469, 570, TRUE);
@@ -110,10 +118,7 @@ void CSudokuMFCDlg::OnTimer(UINT_PTR nIDEvent)
 	CDialogEx::OnTimer(nIDEvent);
 }
 
-void CSudokuMFCDlg::Update()
-{
-
-}
+void CSudokuMFCDlg::Update() {}
 
 void CSudokuMFCDlg::Draw()
 {

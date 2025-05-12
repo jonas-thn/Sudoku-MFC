@@ -4,8 +4,6 @@
 
 void Generator::Init()
 {
-	//Random::Seed();
-
 	try
 	{
 		solver.Init("./sudokus/GeneratorTemplate.txt");

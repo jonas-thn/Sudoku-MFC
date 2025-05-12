@@ -7,13 +7,16 @@ class SpriteLoadException : public std::exception
 {
 private:
     std::string message;
+    std::string errorMessage;
 
 public:
-    SpriteLoadException(const std::string& msg) : message(msg) {}
+    SpriteLoadException(const std::string& msg) : message(msg) 
+    {
+        errorMessage = "Sprite Load Exception: " + message;
+    }
 
     const char* what() const noexcept override 
     {
-		std::string errorMessage = "Sprite Load Exception: " + message;
 		return errorMessage.c_str();
     }
 };
@@ -22,13 +25,16 @@ class FileStreamException : public std::exception
 {
 private:
     std::string message;
+    std::string errorMessage;
 
 public:
-    FileStreamException(const std::string& msg) : message(msg) {}
+    FileStreamException(const std::string& msg) : message(msg) 
+    {
+        errorMessage = "File Stream Exception: " + message;
+    }
 
     const char* what() const noexcept override
     {
-        std::string errorMessage = "File Stream Exception: " + message;
         return errorMessage.c_str();
     }
 };
@@ -37,13 +43,16 @@ class MemoryAllocationException : public std::exception
 {
 private:
     std::string message;
+    std::string errorMessage;
 
 public:
-    MemoryAllocationException(const std::string& msg) : message(msg) {}
+    MemoryAllocationException(const std::string& msg) : message(msg) 
+    {
+        errorMessage = "Memory Allocation Exception: " + message; 
+    }
 
     const char* what() const noexcept override
     {
-        std::string errorMessage = "Memory Allocation Exception: " + message;
         return errorMessage.c_str();
     }
 };
