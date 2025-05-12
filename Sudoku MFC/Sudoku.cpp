@@ -34,22 +34,22 @@ bool Sudoku::Init(Difficulty difficulty)
 	return true;
 }
 
-void Sudoku::SetField(Vec2 position, char number)
+void Sudoku::SetField(const Vec2& position, char number)
 {
 	fields[WIDTH * position.y + position.x] = number;
 }
 
-int Sudoku::GetField(Vec2 position)
+int Sudoku::GetField(const Vec2& position) const
 {
 	return fields[WIDTH * position.y + position.x];
 }
 
-void Sudoku::SetEditField(Vec2 position, char number)
+void Sudoku::SetEditField(const Vec2& position, char number)
 {
 	editFields[WIDTH * position.y + position.x] = number;
 }
 
-int Sudoku::GetEditField(Vec2 position)
+int Sudoku::GetEditField(const Vec2& position) const
 {
 	return editFields[WIDTH * position.y + position.x];
 }
@@ -86,7 +86,7 @@ void Sudoku::ClearSudoku()
 	}
 }
 
-int Sudoku::GetBufferLength()
+int Sudoku::GetBufferLength() const
 {
 	return WIDTH * HEIGHT;
 }
@@ -180,7 +180,7 @@ void Sudoku::LoadFileData(Difficulty difficulty)
 	}
 }
 
-FileData Sudoku::GetCurrentFileData()
+FileData Sudoku::GetCurrentFileData() const
 {
 	return currentFileData;
 }

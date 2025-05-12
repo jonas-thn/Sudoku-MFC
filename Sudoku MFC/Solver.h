@@ -3,11 +3,11 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include "Vec2.h"
 
 struct EmptyField
 {
-	int x;
-	int y;
+	Vec2 position;
 	char number;
 	int startNumber;
 };
@@ -19,15 +19,15 @@ public:
 	~Solver() = default;
 
 	bool Init(std::string original);
-	void SetField(int x, int y, char number);
-	char GetField(int x, int y);
+	void SetField(const Vec2& position, char number);
+	char GetField(const Vec2& position);
 	char* GetBuffer();
 
 	bool NumberInRow(int row, char number);
 	bool NumberInColumn(int column, char number);
-	bool NumberIn3x3(int x, int y, char number);
+	bool NumberIn3x3(const Vec2& position, char number);
 
-	bool CanPlaceNumber(int x, int y, char number);
+	bool CanPlaceNumber(const Vec2& position, char number);
 
 	int FindEmptyFields();
 

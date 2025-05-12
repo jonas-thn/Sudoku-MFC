@@ -5,7 +5,6 @@
 #include <iostream>
 #include <map>
 
-//generator
 //const correctness
 //references
 //safe ptr
@@ -34,26 +33,26 @@ class Sudoku
 public:
 	Sudoku() = default;
 	~Sudoku();
+
 	bool Init(Difficulty difficulty);
 
-	void SetField(Vec2 position, char number);
-	int GetField(Vec2 position);
-
-	void SetEditField(Vec2 position, char number);
-	int GetEditField(Vec2 position);
-
+	void SetField(const Vec2& position, char number);
+	int GetField(const Vec2& position) const;
 	char* GetFields();
-	void FillFieldBuffer(char* buffer);
 
+	void SetEditField(const Vec2& position, char number);
+	int GetEditField(const Vec2& position) const;
 	char* GetEditFields();
+
+	void FillFieldBuffer(char* buffer);
 	void ClearSudoku();
-	int GetBufferLength();
+	int GetBufferLength() const;
 
 	bool LoadFromFile();
 	bool SaveToFile();
 
 	void LoadFileData(Difficulty difficulty);	
-	FileData GetCurrentFileData();
+	FileData GetCurrentFileData() const;
 
 private:
 	const int WIDTH = 9;

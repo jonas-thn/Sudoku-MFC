@@ -88,11 +88,6 @@ void Generator::GenerateSudoku(int difficulty)
 		}
 	}
 
-	/*for (int i = 0; i < 10; i++)
-	{
-		SetField(i, i, '0');
-	}*/
-
 	delete[] tempBuffer1;
 	delete[] tempBuffer2;
 }
@@ -112,7 +107,7 @@ void Generator::GenerateFilledSudoku()
 			int x = Random::Range(0, 8);
 			int y = Random::Range(0, 8);
 
-			if (solver.CanPlaceNumber(x, y, element))
+			if (solver.CanPlaceNumber(Vec2(x, y), element))
 			{
 				SetField(x, y, element);
 			}

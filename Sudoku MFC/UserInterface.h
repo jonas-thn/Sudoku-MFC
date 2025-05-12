@@ -39,20 +39,23 @@ public:
 	UserInterface() = default;
 	~UserInterface() = default;
 
-	Vec2 ConvertPositionToCoordinates(Vec2 position);
-	Vec2 ConvertCoordinatesToPosition(Vec2 coordinates);
+	Vec2 ConvertPositionToCoordinates(const Vec2& position);
+	Vec2 ConvertCoordinatesToPosition(const Vec2& coordinates);
 
-	bool Init(char* fields);
-	CSpriteList& GetSpriteList();
-	void SetField(Vec2 position, char number, bool isUndo = false);
-	CSprite* LoadNumberSprite(int number);
-	CSprite* GetSpriteFromPosition(Vec2 position);
-	void SetBorder(const Vec2& pos);
-	Vec2 GetLastMousePos();
-	void CompleteUpdate(char* fields);
-	void ClearField(Vec2 position, bool isUndo = false);
+	bool Init(const char* fields);
 
+	void SetField(const Vec2& position, char number, bool isUndo = false);
+	void ClearField(const Vec2& position, bool isUndo = false);
+	void CompleteUpdate(const char* fields);
 	char* GetTempFieldBuffer();
+
+	CSpriteList& GetSpriteList();
+	CSprite* LoadNumberSprite(int number);
+	CSprite* GetSpriteFromPosition(const Vec2& position);
+
+	void SetBorder(const Vec2& pos);
+	Vec2 GetLastMousePos() const;
+
 	void TriggerUndo();
 	
 private:

@@ -32,14 +32,14 @@ bool Solver::Init(std::string original)
 	return true;
 }
 
-void Solver::SetField(int x, int y, char number)
+void Solver::SetField(const Vec2& position, char number)
 {
-	fields[y * WIDTH + x] = number;
+	fields[position.y * WIDTH + position.x] = number;
 }
 
-char Solver::GetField(int x, int y)
+char Solver::GetField(const Vec2& position)
 {
-	return fields[y * WIDTH + x];
+	return fields[position.y * WIDTH + position.x];
 }
 
 char* Solver::GetBuffer()
@@ -51,7 +51,7 @@ bool Solver::NumberInRow(int row, char number)
 {
 	for (int x = 0; x < WIDTH; x++)
 	{
-		if (number == GetField(x, row)) 
+		if (number == GetField(Vec2( x, row )))
 		{
 			return true; 
 		}
@@ -64,7 +64,7 @@ bool Solver::NumberInColumn(int column, char number)
 {
 	for (int y = 0; y < HEIGHT; y++)
 	{
-		if (number == GetField(column, y))
+		if (number == GetField(Vec2(column, y)))
 		{
 			return true;
 		}
@@ -73,10 +73,10 @@ bool Solver::NumberInColumn(int column, char number)
 	return false;
 }
 
-bool Solver::NumberIn3x3(int x, int y, char number)
+bool Solver::NumberIn3x3(const Vec2& position, char number)
 {
-	int xBox = x / (int)BOX; 
-	int yBox = y / (int)BOX; 
+	int xBox = position.x / (int)BOX; 
+	int yBox = position.y / (int)BOX; 
 
 	int xStart = xBox * BOX; 
 	int yStart = yBox * BOX;
@@ -85,7 +85,7 @@ bool Solver::NumberIn3x3(int x, int y, char number)
 	{
 		for (int x = 0; x < BOX; x++)
 		{
-			char element = GetField(xStart + x, yStart + y);	
+			char element = GetField(Vec2(xStart + x, yStart + y));	
 
 			if (element == number)			
 			{
@@ -97,11 +97,11 @@ bool Solver::NumberIn3x3(int x, int y, char number)
 	return false; 
 }
 
-bool Solver::CanPlaceNumber(int x, int y, char number)
+bool Solver::CanPlaceNumber(const Vec2& position, char number)
 {
-	int rowTest = !NumberInRow(y, number); 
-	int columnTest = !NumberInColumn(x, number); 
-	int boxTest = !NumberIn3x3(x, y, number); 
+	int rowTest = !NumberInRow(position.y, number); 
+	int columnTest = !NumberInColumn(position.x, number); 
+	int boxTest = !NumberIn3x3(position, number); 
 
 	return (rowTest && columnTest && boxTest);
 }
@@ -114,9 +114,9 @@ int Solver::FindEmptyFields()
 	{
 		for (int x = 0; x < WIDTH; x++)
 		{
-			if (GetField(x, y) == '0') 
+			if (GetField(Vec2(x, y)) == '0')
 			{
-				EmptyField tempField = { x, y, '0', 1 };
+				EmptyField tempField = { Vec2(x, y), '0', 1 };
 				emptyFields.push_back(tempField);
 				count++;
 			}
@@ -142,11 +142,11 @@ bool Solver::SolveSudoku()
 		for (int testNumber = fieldTemp.startNumber; testNumber <= 9; testNumber++)
 		{
 			char numToChar = (char)(testNumber + '0');
-			if (CanPlaceNumber(fieldTemp.x, fieldTemp.y, numToChar)) 
+			if (CanPlaceNumber(fieldTemp.position, numToChar)) 
 			{
-				SetField(fieldTemp.x, fieldTemp.y, numToChar); 
+				SetField(fieldTemp.position, numToChar); 
 
-				EmptyField newField = { fieldTemp.x, fieldTemp.y, numToChar, testNumber + 1 };
+				EmptyField newField = { fieldTemp.position, numToChar, testNumber + 1 };
 				emptyFields[index] = newField; 
 
 				index++;
@@ -157,8 +157,8 @@ bool Solver::SolveSudoku()
 
 		if (!found) 
 		{
-			SetField(fieldTemp.x, fieldTemp.y, '0'); 
-			EmptyField undoField = { fieldTemp.x, fieldTemp.y, '0', 1 }; 
+			SetField(fieldTemp.position, '0'); 
+			EmptyField undoField = { fieldTemp.position, '0', 1 }; 
 			emptyFields[index] = undoField;
 
 			index--;

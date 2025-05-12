@@ -2,17 +2,17 @@
 #include "UserInterface.h"
 
 
-Vec2 UserInterface::ConvertPositionToCoordinates(Vec2 position)
+Vec2 UserInterface::ConvertPositionToCoordinates(const Vec2& position)
 {
 	return Vec2(position.x * tileDimension.x, position.y * tileDimension.y);
 }
 
-Vec2 UserInterface::ConvertCoordinatesToPosition(Vec2 coordinates)
+Vec2 UserInterface::ConvertCoordinatesToPosition(const Vec2& coordinates)
 {
 	return Vec2(coordinates.x / tileDimension.x, coordinates.y / tileDimension.y);
 }
 
-bool UserInterface::Init(char* fields)
+bool UserInterface::Init(const char* fields)
 {
 	undo.ClearUndo();
 
@@ -66,7 +66,7 @@ CSpriteList& UserInterface::GetSpriteList()
 	return spriteList;
 }
 
-void UserInterface::SetField(Vec2 position, char number, bool isUndo)
+void UserInterface::SetField(const Vec2& position, char number, bool isUndo)
 {
 	CSprite* numberSprite = LoadNumberSprite(number - '0');
 	CSprite* existingSprite = GetSpriteFromPosition(position);
@@ -104,7 +104,7 @@ CSprite* UserInterface::LoadNumberSprite(int number)
 	return numberSprite;
 }
 
-CSprite* UserInterface::GetSpriteFromPosition(Vec2 position)
+CSprite* UserInterface::GetSpriteFromPosition(const Vec2& position)
 {
 	for (const SpriteData& spriteData : spriteMap)
 	{
@@ -126,12 +126,12 @@ void UserInterface::SetBorder(const Vec2& pos)
 	border.SetPosition(lastMousePos);
 }
 
-Vec2 UserInterface::GetLastMousePos()
+Vec2 UserInterface::GetLastMousePos() const
 {
 	return lastMousePos;
 }
 
-void UserInterface::CompleteUpdate(char* fields)
+void UserInterface::CompleteUpdate(const char* fields)
 {
 	for (int y = 0; y < HEIGHT; y++)
 	{
@@ -151,7 +151,7 @@ void UserInterface::CompleteUpdate(char* fields)
 	}
 }
 
-void UserInterface::ClearField(Vec2 position, bool isUndo)
+void UserInterface::ClearField(const Vec2& position, bool isUndo)
 {
 	CSprite* existingSprite = GetSpriteFromPosition(position);
 	if (existingSprite != nullptr)
