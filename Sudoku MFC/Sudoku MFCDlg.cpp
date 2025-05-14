@@ -92,7 +92,15 @@ void CSudokuMFCDlg::OnPaint()
 
 	if (!IsIconic())
 	{
-		userInterface.GetSpriteList().RedrawAll(&dc, 0, 0);
+		try
+		{
+			userInterface.GetSpriteList().RedrawAll(&dc, 0, 0);
+		}
+		catch (const std::exception& e)
+		{
+			MessageBoxA(nullptr, e.what(), "Error", MB_OK | MB_ICONERROR);
+			::PostQuitMessage(1);
+		}
 	}
 
 	CDialogEx::OnPaint();
@@ -100,9 +108,16 @@ void CSudokuMFCDlg::OnPaint()
 
 void CSudokuMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	//w: 453 h:435
-	Vec2 position = userInterface.ConvertCoordinatesToPosition(Vec2(point.x, point.y));
-	userInterface.SetBorder(position);
+	try
+	{
+		Vec2 position = userInterface.ConvertCoordinatesToPosition(Vec2(point.x, point.y));
+		userInterface.SetBorder(position);
+	}
+	catch (const std::exception& e)
+	{
+		MessageBoxA(nullptr, e.what(), "Error", MB_OK | MB_ICONERROR);
+		::PostQuitMessage(1);
+	}
 
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
@@ -123,7 +138,16 @@ void CSudokuMFCDlg::Update() {}
 void CSudokuMFCDlg::Draw()
 {
 	CClientDC dc(this);
-	userInterface.GetSpriteList().Update(&dc, 0, 0);
+
+	try
+	{
+		userInterface.GetSpriteList().Update(&dc, 0, 0);
+	}
+	catch (const std::exception& e)
+	{
+		MessageBoxA(nullptr, e.what(), "Error", MB_OK | MB_ICONERROR);
+		::PostQuitMessage(1);
+	}
 }
 
 void CSudokuMFCDlg::OnBnClickedButton5()
@@ -142,7 +166,17 @@ BOOL CSudokuMFCDlg::PreTranslateMessage(MSG* pMsg)
 		if (pMsg->wParam >= '0' && pMsg->wParam <= '9')
 		{
 			char key = (char)pMsg->wParam;
-			userInterface.SetField(userInterface.GetLastMousePos(), key);
+
+			try
+			{
+				userInterface.SetField(userInterface.GetLastMousePos(), key);
+			}
+			catch (const std::exception& e)
+			{
+				MessageBoxA(nullptr, e.what(), "Error", MB_OK | MB_ICONERROR);
+				::PostQuitMessage(1);
+			}
+
 			return TRUE;
 		}
 	}
@@ -153,15 +187,31 @@ BOOL CSudokuMFCDlg::PreTranslateMessage(MSG* pMsg)
 //RESET
 void CSudokuMFCDlg::OnBnClickedButton2()
 {
-	sudoku.ClearSudoku();
-	userInterface.CompleteUpdate(sudoku.GetFields());
+	try
+	{
+		sudoku.ClearSudoku();
+		userInterface.CompleteUpdate(sudoku.GetFields());
+	}
+	catch (const std::exception& e)
+	{
+		MessageBoxA(nullptr, e.what(), "Error", MB_OK | MB_ICONERROR);
+		::PostQuitMessage(1);
+	}
 }
 
 //SAVE
 void CSudokuMFCDlg::OnBnClickedButton1()
 {
-	sudoku.FillFieldBuffer(userInterface.GetTempFieldBuffer());
-	sudoku.SaveToFile();
+	try
+	{
+		sudoku.FillFieldBuffer(userInterface.GetTempFieldBuffer());
+		sudoku.SaveToFile();
+	}
+	catch (const std::exception& e)
+	{
+		MessageBoxA(nullptr, e.what(), "Error", MB_OK | MB_ICONERROR);
+		::PostQuitMessage(1);
+	}
 }
 
 //LOAD
@@ -199,13 +249,29 @@ void CSudokuMFCDlg::OnBnClickedButton3()
 //SOLVE
 void CSudokuMFCDlg::OnBnClickedButton4()
 {
-	solver.SolveSudoku();
-	userInterface.CompleteUpdate(solver.GetBuffer());
+	try
+	{
+		solver.SolveSudoku();
+		userInterface.CompleteUpdate(solver.GetBuffer());
+	}
+	catch (const std::exception& e)
+	{
+		MessageBoxA(nullptr, e.what(), "Error", MB_OK | MB_ICONERROR);
+		::PostQuitMessage(1);
+	}
 }
 
 //GENERATE
 void CSudokuMFCDlg::OnBnClickedButton7()
 {
-	generator.GenerateSudoku(5);
-	userInterface.CompleteUpdate(generator.GetBuffer());
+	try
+	{
+		generator.GenerateSudoku(5);
+		userInterface.CompleteUpdate(generator.GetBuffer());
+	}
+	catch (const std::exception& e)
+	{
+		MessageBoxA(nullptr, e.what(), "Error", MB_OK | MB_ICONERROR);
+		::PostQuitMessage(1);
+	}
 }
