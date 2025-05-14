@@ -49,7 +49,7 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 	{
 		sudoku.Init(difficulty);
 		sudoku.LoadFromFile();
-		userInterface.Init(sudoku.GetFields());
+		userInterface.Init(sudoku.GetFields(), sudoku.GetEditFields());
 		solver.Init(sudoku.GetCurrentFileData().original);
 		generator.Init();
 	}

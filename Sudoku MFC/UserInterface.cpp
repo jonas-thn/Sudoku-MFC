@@ -13,7 +13,7 @@ Vec2 UserInterface::ConvertCoordinatesToPosition(const Vec2& coordinates)
 	return Vec2(coordinates.x / tileDimension.x, coordinates.y / tileDimension.y);
 }
 
-void UserInterface::Init(const char* fields)
+void UserInterface::Init(const char* fields, const char* editFields)
 {
 	undo.ClearUndo();
 
@@ -57,6 +57,11 @@ void UserInterface::Init(const char* fields)
 		}
 	}
 
+	for (int i = 0; i < WIDTH * HEIGHT; i++)
+	{
+		editFieldBuffer.push_back(editFields[i]);
+	}
+
 	border.Init(spriteList);
 
 	border.SetPosition(Vec2(0, 0));
@@ -69,6 +74,11 @@ CSpriteList& UserInterface::GetSpriteList()
 
 void UserInterface::SetField(const Vec2& position, char number, bool isUndo)
 {
+	if (editFieldBuffer.at(position.x + (position.y * WIDTH)) == '0')
+	{
+		return;
+	}
+
 	CSprite* numberSprite = LoadNumberSprite(number - '0');
 	CSprite* existingSprite = GetSpriteFromPosition(position);
 	if (existingSprite != nullptr)
@@ -78,6 +88,11 @@ void UserInterface::SetField(const Vec2& position, char number, bool isUndo)
 	int index = position.x + (position.y * WIDTH);
 	spriteMap.at(index) = SpriteData(numberSprite, position, number);
 	numberSprite->SetPosition(position.x * tileDimension.x + offsets.x, position.y * tileDimension.y + offsets.y);
+
+	if (editFieldBuffer.at(index) == '1')
+	{
+		numberSprite->SetAlpha(0.6f);
+	}
 
 	if (!isUndo)
 	{

@@ -42,7 +42,7 @@ public:
 	Vec2 ConvertPositionToCoordinates(const Vec2& position);
 	Vec2 ConvertCoordinatesToPosition(const Vec2& coordinates);
 
-	void Init(const char* fields);
+	void Init(const char* fields, const char* editFields);
 
 	void SetField(const Vec2& position, char number, bool isUndo = false);
 	void ClearField(const Vec2& position, bool isUndo = false);
@@ -69,6 +69,7 @@ private:
 	CSpriteList spriteList;
 	std::vector<SpriteData> spriteMap;
 	std::vector<char> tempFieldBuffer;
+	std::vector<char> editFieldBuffer;
 
 	Vec2 lastMousePos = Vec2(0, 0);
 	const int WIDTH = 9;

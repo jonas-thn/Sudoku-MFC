@@ -6,8 +6,6 @@
 #include <map>
 #include "CustomExceptions.h"
 
-//show static fields
-
 enum class Difficulty : int
 {
 	Easy,
