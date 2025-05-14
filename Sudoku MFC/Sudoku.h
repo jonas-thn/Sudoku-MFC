@@ -44,6 +44,7 @@ public:
 
 	void LoadFromFile();
 	void SaveToFile();
+	void SaveToFileOverrideOriginal();
 
 	void LoadFileData(Difficulty difficulty);	
 	FileData GetCurrentFileData() const;

@@ -149,6 +149,28 @@ void Sudoku::SaveToFile()
 	saveFile.close();
 }
 
+void Sudoku::SaveToFileOverrideOriginal()
+{
+	std::string original = currentFileData.original;
+
+	std::ofstream originalFile(original);
+	if (!originalFile)
+	{
+		throw FileStreamException("Error saving sudoku!");
+	}
+
+	for (int i = 0; i < WIDTH * HEIGHT; ++i)
+	{
+		if (i % 9 == 0)
+		{
+			originalFile << '\n';
+		}
+		originalFile << fields[i];
+	}
+
+	originalFile.close();
+}
+
 void Sudoku::LoadFileData(Difficulty difficulty)
 {
 	switch (difficulty)

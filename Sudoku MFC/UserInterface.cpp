@@ -34,6 +34,11 @@ void UserInterface::Init(const char* fields, const char* editFields)
 	sudokuBackground.SetPosition(0, 0);
 	spriteList.Insert(&sudokuBackground);
 
+	for (int i = 0; i < WIDTH * HEIGHT; i++)
+	{
+		editFieldBuffer.push_back(editFields[i]);
+	}
+
 	for (int y = 0; y < HEIGHT; y++)
 	{
 		for (int x = 0; x < WIDTH; x++)
@@ -54,12 +59,12 @@ void UserInterface::Init(const char* fields, const char* editFields)
 			CSprite* numberSprite = LoadNumberSprite(number);
 			spriteMap.at(index) = SpriteData(numberSprite, Vec2(x, y), number);
 			numberSprite->SetPosition(x * tileDimension.x + offsets.x, y * tileDimension.y + offsets.y);
-		}
-	}
 
-	for (int i = 0; i < WIDTH * HEIGHT; i++)
-	{
-		editFieldBuffer.push_back(editFields[i]);
+			if (editFieldBuffer.at(index) == '1')
+			{
+				numberSprite->SetAlpha(0.6f);
+			}
+		}
 	}
 
 	border.Init(spriteList);
@@ -74,7 +79,7 @@ CSpriteList& UserInterface::GetSpriteList()
 
 void UserInterface::SetField(const Vec2& position, char number, bool isUndo)
 {
-	if (editFieldBuffer.at(position.x + (position.y * WIDTH)) == '0')
+	if ((editFieldBuffer.at(position.x + (position.y * WIDTH)) == '0'))
 	{
 		return;
 	}

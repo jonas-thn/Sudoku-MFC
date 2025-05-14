@@ -261,13 +261,26 @@ void CSudokuMFCDlg::OnBnClickedButton4()
 	}
 }
 
-//GENERATE
 void CSudokuMFCDlg::OnBnClickedButton7()
 {
 	try
 	{
-		generator.GenerateSudoku(5);
+		int generatorLevel = Random::GetInstance().Range(5, 10);
+		generator.GenerateSudoku(generatorLevel);
 		userInterface.CompleteUpdate(generator.GetBuffer());
+
+		sudoku.FillFieldBuffer(userInterface.GetTempFieldBuffer());
+		sudoku.SaveToFile();
+
+		if (difficulty == Difficulty::Generated)
+		{
+			sudoku.SaveToFileOverrideOriginal();
+			sudoku.LoadFromFile();
+			solver.Init(sudoku.GetCurrentFileData().original);
+		}
+
+		CSudokuMFCDlg dlg(nullptr, difficulty);
+		INT_PTR nResponse = dlg.DoModal();
 	}
 	catch (const std::exception& e)
 	{

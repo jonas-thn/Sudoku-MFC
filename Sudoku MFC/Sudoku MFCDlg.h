@@ -6,6 +6,7 @@
 #include "Undo.h"
 #include "Solver.h"
 #include "Generator.h"
+#include "Random.h"
 
 class CSudokuMFCDlg : public CDialogEx
 {
