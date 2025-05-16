@@ -1,5 +1,4 @@
 // MenuMFC.cpp: Implementierungsdatei
-//
 
 #include "pch.h"
 #include "Sudoku MFC.h"
@@ -15,7 +14,6 @@ IMPLEMENT_DYNAMIC(MenuMFC, CDialogEx)
 MenuMFC::MenuMFC(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MENU_MFC_DIALOG, pParent)
 {
-
 }
 
 MenuMFC::~MenuMFC()
@@ -33,7 +31,6 @@ BEGIN_MESSAGE_MAP(MenuMFC, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &MenuMFC::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &MenuMFC::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &MenuMFC::OnBnClickedButton4)
-	ON_BN_CLICKED(IDC_BUTTON5, &MenuMFC::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 void MenuMFC::OpenSudoku(Difficulty difficulty)
@@ -62,7 +59,3 @@ void MenuMFC::OnBnClickedButton4()
 	OpenSudoku(Difficulty::Impossible);
 }
 
-void MenuMFC::OnBnClickedButton5()
-{
-	OpenSudoku(Difficulty::Generated);
-}

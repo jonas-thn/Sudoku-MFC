@@ -11,8 +11,7 @@ enum class Difficulty : int
 	Easy,
 	Medium,
 	Hard,
-	Impossible,
-	Generated
+	Impossible
 };
 
 struct FileData

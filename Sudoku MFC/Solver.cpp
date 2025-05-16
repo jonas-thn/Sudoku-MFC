@@ -48,6 +48,27 @@ char* Solver::GetBuffer()
 	return fields;
 }
 
+void Solver::Clear()
+{
+	for (int y = 0; y < HEIGHT; y++)
+	{
+		for (int x = 0; x < WIDTH; x++)
+		{
+			SetField(Vec2(x, y), '0');
+		}
+	}
+}
+
+void Solver::SetField(const int index, char number)
+{
+	fields[index] = number;
+}
+
+char Solver::GetField(const int index) const
+{
+	return fields[index];
+}
+
 bool Solver::NumberInRow(int row, char number) const
 {
 	for (int x = 0; x < WIDTH; x++)
@@ -100,9 +121,9 @@ bool Solver::NumberIn3x3(const Vec2& position, char number) const
 
 bool Solver::CanPlaceNumber(const Vec2& position, char number) const
 {
-	int rowTest = !NumberInRow(position.y, number); 
-	int columnTest = !NumberInColumn(position.x, number); 
-	int boxTest = !NumberIn3x3(position, number); 
+	bool rowTest = !NumberInRow(position.y, number); 
+	bool columnTest = !NumberInColumn(position.x, number); 
+	bool boxTest = !NumberIn3x3(position, number); 
 
 	return (rowTest && columnTest && boxTest);
 }

@@ -5,7 +5,6 @@
 #include "Sudoku.h"
 #include "Undo.h"
 #include "Solver.h"
-#include "Generator.h"
 #include "Random.h"
 
 class CSudokuMFCDlg : public CDialogEx
@@ -32,7 +31,6 @@ protected:
 	Sudoku sudoku;
 	UserInterface userInterface;
 	Solver solver;
-	Generator generator;
 
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
@@ -43,11 +41,10 @@ private:
 	void Draw();
 	Difficulty difficulty = Difficulty::Easy;
 public:
-	afx_msg void OnBnClickedButton5();
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton6();
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnBnClickedButton4();
-	afx_msg void OnBnClickedButton7();
+	afx_msg void OnBnClickedButton5();
 };

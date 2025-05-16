@@ -23,6 +23,10 @@ public:
 	void SetField(const Vec2& position, char number);
 	char GetField(const Vec2& position) const;
 	char* GetBuffer();
+	void Clear();
+
+	void SetField(const int index, char number);
+	char GetField(const int index) const;
 
 	bool NumberInRow(int row, char number) const;
 	bool NumberInColumn(int column, char number) const;

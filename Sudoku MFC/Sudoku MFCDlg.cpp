@@ -25,13 +25,12 @@ BEGIN_MESSAGE_MAP(CSudokuMFCDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_TIMER()
-	ON_BN_CLICKED(IDC_BUTTON5, &CSudokuMFCDlg::OnBnClickedButton5)
 	ON_BN_CLICKED(IDC_BUTTON2, &CSudokuMFCDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON1, &CSudokuMFCDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON6, &CSudokuMFCDlg::OnBnClickedButton6)
 	ON_BN_CLICKED(IDC_BUTTON3, &CSudokuMFCDlg::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CSudokuMFCDlg::OnBnClickedButton4)
-	ON_BN_CLICKED(IDC_BUTTON7, &CSudokuMFCDlg::OnBnClickedButton7)
+	ON_BN_CLICKED(IDC_BUTTON5, &CSudokuMFCDlg::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 BOOL CSudokuMFCDlg::OnInitDialog()
@@ -51,7 +50,6 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 		sudoku.LoadFromFile();
 		userInterface.Init(sudoku.GetFields(), sudoku.GetEditFields());
 		solver.Init(sudoku.GetCurrentFileData().original);
-		generator.Init();
 	}
 	catch (const std::exception& e)
 	{
@@ -74,14 +72,7 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 	//Sudoku zu neuem main window machen
 	AfxGetApp()->m_pMainWnd = this;
 
-	if (sudoku.GetCurrentFileData().difficulty == Difficulty::Generated)
-	{
-		GetDlgItem(IDC_BUTTON7)->EnableWindow(TRUE);
-	}
-	else
-	{
-		GetDlgItem(IDC_BUTTON7)->EnableWindow(FALSE);
-	}
+	CenterWindow();
 
 	return TRUE; 
 }
@@ -150,15 +141,6 @@ void CSudokuMFCDlg::Draw()
 	}
 }
 
-void CSudokuMFCDlg::OnBnClickedButton5()
-{
-	CWnd* pMainWnd = AfxGetMainWnd();
-	if (pMainWnd)
-	{
-		pMainWnd->PostMessage(WM_CLOSE);
-	}
-}
-
 BOOL CSudokuMFCDlg::PreTranslateMessage(MSG* pMsg)
 {
 	if (pMsg->message == WM_KEYDOWN)
@@ -219,15 +201,6 @@ void CSudokuMFCDlg::OnBnClickedButton6()
 {
 	MenuMFC dlg;
 
-	if (sudoku.GetCurrentFileData().difficulty == Difficulty::Generated)
-	{
-		GetDlgItem(IDC_BUTTON7)->EnableWindow(TRUE);
-	}
-	else
-	{
-		GetDlgItem(IDC_BUTTON7)->EnableWindow(FALSE);
-	}
-
 	CWnd* pMainWnd = AfxGetMainWnd();
 	if (pMainWnd)
 	{
@@ -251,7 +224,10 @@ void CSudokuMFCDlg::OnBnClickedButton4()
 {
 	try
 	{
-		solver.SolveSudoku();
+		if (!solver.SolveSudoku())
+		{
+			MessageBoxA(nullptr, "Not solvable", "Error", MB_OK | MB_ICONERROR);
+		}
 		userInterface.CompleteUpdate(solver.GetBuffer());
 	}
 	catch (const std::exception& e)
@@ -261,30 +237,11 @@ void CSudokuMFCDlg::OnBnClickedButton4()
 	}
 }
 
-void CSudokuMFCDlg::OnBnClickedButton7()
+void CSudokuMFCDlg::OnBnClickedButton5()
 {
-	try
+	CWnd* pMainWnd = AfxGetMainWnd();
+	if (pMainWnd)
 	{
-		int generatorLevel = Random::GetInstance().Range(5, 10);
-		generator.GenerateSudoku(generatorLevel);
-		userInterface.CompleteUpdate(generator.GetBuffer());
-
-		sudoku.FillFieldBuffer(userInterface.GetTempFieldBuffer());
-		sudoku.SaveToFile();
-
-		if (difficulty == Difficulty::Generated)
-		{
-			sudoku.SaveToFileOverrideOriginal();
-			sudoku.LoadFromFile();
-			solver.Init(sudoku.GetCurrentFileData().original);
-		}
-
-		CSudokuMFCDlg dlg(nullptr, difficulty);
-		INT_PTR nResponse = dlg.DoModal();
-	}
-	catch (const std::exception& e)
-	{
-		MessageBoxA(nullptr, e.what(), "Error", MB_OK | MB_ICONERROR);
-		::PostQuitMessage(1);
+		pMainWnd->PostMessage(WM_CLOSE);
 	}
 }

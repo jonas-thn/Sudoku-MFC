@@ -185,7 +185,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CustomExceptions.h" />
-    <ClInclude Include="Generator.h" />
     <ClInclude Include="MenuMFC.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Solver.h" />
@@ -203,7 +202,6 @@
     <ClInclude Include="XUnzip.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Generator.cpp" />
     <ClCompile Include="MenuMFC.cpp" />
     <ClCompile Include="Solver.cpp" />
     <ClCompile Include="Sudoku.cpp" />

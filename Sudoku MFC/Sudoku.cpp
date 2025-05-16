@@ -187,9 +187,6 @@ void Sudoku::LoadFileData(Difficulty difficulty)
 	case Difficulty::Impossible:
 		currentFileData = { "./sudokus/Sudoku4.txt", "./sudokus/Sudoku4_Save.txt", Difficulty::Impossible };
 		break;
-	case Difficulty::Generated:
-		currentFileData = { "./sudokus/Sudoku5.txt", "./sudokus/Sudoku5_Save.txt", Difficulty::Generated };
-		break;
 	}
 }
 
