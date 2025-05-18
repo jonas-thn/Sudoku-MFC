@@ -19,22 +19,23 @@ public:
 	Solver() = default;
 	~Solver();
 
+	//Sudoku Felder
 	void Init(const std::string& original);
 	void SetField(const Vec2& position, char number);
 	char GetField(const Vec2& position) const;
+	void SetField(const int index, char number);
+	char GetField(const int index) const;
 	char* GetBuffer();
 	void Clear();
 
-	void SetField(const int index, char number);
-	char GetField(const int index) const;
-
+	//Prüfen ob Nummer in Zeile/Spalte/Quadrat
 	bool NumberInRow(int row, char number) const;
 	bool NumberInColumn(int column, char number) const;
 	bool NumberIn3x3(const Vec2& position, char number) const;
 	bool CanPlaceNumber(const Vec2& position, char number) const;
 
+	//Sudoku lösen
 	int FindEmptyFields();
-
 	bool SolveSudoku();
 
 private:

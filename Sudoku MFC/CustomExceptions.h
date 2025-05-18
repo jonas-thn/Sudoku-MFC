@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <string>
 
+//Exception, wenn Sprite nicht geladen werden kann
 class SpriteLoadException : public std::exception 
 {
 private:
@@ -21,6 +22,7 @@ public:
     }
 };
 
+//Exception, wenn Datei nicht geladen werden kann
 class FileStreamException : public std::exception
 {
 private:
@@ -39,6 +41,7 @@ public:
     }
 };
 
+//Exception, wenn Speicher nicht zugewiesen werden kann
 class MemoryAllocationException : public std::exception
 {
 private:

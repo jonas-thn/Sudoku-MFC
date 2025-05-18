@@ -6,6 +6,7 @@
 #include <map>
 #include "CustomExceptions.h"
 
+//Schwierigkeitsgrade
 enum class Difficulty : int
 {
 	Easy,
@@ -14,6 +15,7 @@ enum class Difficulty : int
 	Impossible
 };
 
+//Pfade für die Sudoku-Dateien und Schwierigkeit
 struct FileData
 {
 	std::string original;
@@ -29,22 +31,23 @@ public:
 
 	void Init(Difficulty difficulty);
 
+	//Sudoku Felder
 	void SetField(const Vec2& position, char number);
 	int GetField(const Vec2& position) const;
 	char* GetFields();
-
-	void SetEditField(const Vec2& position, char number);
-	int GetEditField(const Vec2& position) const;
-	char* GetEditFields();
-
 	void FillFieldBuffer(char* buffer);
 	void ClearSudoku();
 	int GetBufferLength() const;
 
+	//bearbeitbare Felder
+	void SetEditField(const Vec2& position, char number);
+	int GetEditField(const Vec2& position) const;
+	char* GetEditFields();
+
+	//Sudoku Datein laden / speichern
 	void LoadFromFile();
 	void SaveToFile();
 	void SaveToFileOverrideOriginal();
-
 	void LoadFileData(Difficulty difficulty);	
 	FileData GetCurrentFileData() const;
 

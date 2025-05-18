@@ -5,14 +5,14 @@
 class Random 
 {
 public:
-    //singleton pattern damit seed automatisch initialisiert wird
+    //singleton damit seed automatisch initialisiert wird
     static Random& GetInstance()
     {
 		static Random instance; 
 		return instance;       
     }
 
-	//min and max inclusive
+	//min and max inklusive
     int Range(int min, int max) 
     {
         return min + std::rand() % (max - min + 1);

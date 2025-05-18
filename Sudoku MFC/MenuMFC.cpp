@@ -1,13 +1,8 @@
-// MenuMFC.cpp: Implementierungsdatei
-
 #include "pch.h"
 #include "Sudoku MFC.h"
 #include "afxdialogex.h"
 #include "MenuMFC.h"
 #include "Sudoku MFCDlg.h"
-
-
-// MenuMFC-Dialog
 
 IMPLEMENT_DYNAMIC(MenuMFC, CDialogEx)
 
@@ -35,6 +30,7 @@ END_MESSAGE_MAP()
 
 void MenuMFC::OpenSudoku(Difficulty difficulty)
 {
+	//Sudoku mit ausgewählter Schwierigkeit starten
 	CSudokuMFCDlg dlg(nullptr, difficulty);
 	INT_PTR nResponse = dlg.DoModal();
 }

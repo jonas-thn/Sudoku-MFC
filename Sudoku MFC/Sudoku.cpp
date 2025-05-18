@@ -1,12 +1,14 @@
 #include "pch.h"
 #include "Sudoku.h"
 
+//dynamischen Speicher freigeben
 Sudoku::~Sudoku()
 {
 	delete[] fields;
 	delete[] editFields;
 }
 
+//Sudoku mit Zahlen aus Datei initialisieren
 void Sudoku::Init(Difficulty difficulty)
 {
 	fields = new char[WIDTH * HEIGHT];
@@ -87,6 +89,7 @@ int Sudoku::GetBufferLength() const
 	return WIDTH * HEIGHT;
 }
 
+//Sudoku mit File-Stream laden
 void Sudoku::LoadFromFile()
 {
 	std::string original = currentFileData.original;
@@ -127,6 +130,7 @@ void Sudoku::LoadFromFile()
 	originalFile.close();
 }
 
+//Sudoku Save Datei mit File-Stream speichern
 void Sudoku::SaveToFile()
 {
 	std::string save = currentFileData.save;
@@ -149,6 +153,7 @@ void Sudoku::SaveToFile()
 	saveFile.close();
 }
 
+//Sudoku Original Datei mit File-Stream speichern
 void Sudoku::SaveToFileOverrideOriginal()
 {
 	std::string original = currentFileData.original;
@@ -171,6 +176,7 @@ void Sudoku::SaveToFileOverrideOriginal()
 	originalFile.close();
 }
 
+//Datei-Daten mit Schwierigkeit laden
 void Sudoku::LoadFileData(Difficulty difficulty)
 {
 	switch (difficulty)

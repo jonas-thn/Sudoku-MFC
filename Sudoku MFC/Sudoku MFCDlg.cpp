@@ -12,6 +12,7 @@
 CSudokuMFCDlg::CSudokuMFCDlg(CWnd* pParent, Difficulty difficulty)
 	: CDialogEx(IDD_SUDOKU_MFC_DIALOG, pParent)
 {
+	//Schwierigkeit, Icon und Textfarbe initialisieren
 	this->difficulty = difficulty;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	textColor = RGB(0, 0, 0); 
@@ -38,6 +39,7 @@ BEGIN_MESSAGE_MAP(CSudokuMFCDlg, CDialogEx)
 	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
+// CSudokuMFCDlg Initialisierung
 BOOL CSudokuMFCDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -45,16 +47,18 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			
 	SetIcon(m_hIcon, FALSE);		
 
+	//Resize deaktivieren
 	LONG style = GetStyle();
-	style &= ~WS_THICKFRAME;  //resize frame negieren / deaktivieren       
+	style &= ~WS_THICKFRAME;  //thickframe negieren
 	SetWindowLongPtr(m_hWnd, GWL_STYLE, style);
 
 	try
 	{
+		//Objekte initialisieren
 		sudoku.Init(difficulty);
 		sudoku.LoadFromFile();
-		userInterface.Init(sudoku.GetFields(), sudoku.GetEditFields());
 		solver.Init(sudoku.GetCurrentFileData().original);
+		userInterface.Init(sudoku.GetFields(), sudoku.GetEditFields());
 	}
 	catch (const std::exception& e)
 	{
@@ -62,9 +66,7 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 		::PostQuitMessage(1);
 	}
 
-	SetWindowPos(nullptr, 0, 0, 469, 570, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
-	MoveWindow(0, 0, 469, 570, TRUE);
-
+	//timer event alle 100ms
 	SetTimer(1, 100, nullptr);
 
 	//Menü schließen
@@ -77,11 +79,15 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 	//Sudoku zu neuem main window machen
 	AfxGetApp()->m_pMainWnd = this;
 
+	//Fenster Größe und Position setzen
+	SetWindowPos(nullptr, 0, 0, 469, 570, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
+	MoveWindow(0, 0, 469, 570, TRUE);
 	CenterWindow();
 
 	return TRUE; 
 }
 
+//Text Farbe aktualisieren
 HBRUSH CSudokuMFCDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
@@ -96,6 +102,7 @@ HBRUSH CSudokuMFCDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	return hbr;
 }
 
+//Fenster Inhalt neu zeichnen
 void CSudokuMFCDlg::OnPaint()
 {
 	CPaintDC dc(this);
@@ -104,6 +111,7 @@ void CSudokuMFCDlg::OnPaint()
 	{
 		try
 		{
+			//Sprites neu zeichnen
 			userInterface.GetSpriteList().RedrawAll(&dc, 0, 0);
 		}
 		catch (const std::exception& e)
@@ -116,8 +124,10 @@ void CSudokuMFCDlg::OnPaint()
 	CDialogEx::OnPaint();
 }
 
+//Static Text setzen
 void CSudokuMFCDlg::SetText(const std::wstring& text, uint8_t r, uint8_t g, uint8_t b, TextState textSate)
 {
+	//Zustand, Farbe und Inhalt ändern
 	textState = TextState::Save;
 	staticText.SetWindowTextW(text.data());
 	textColor = RGB(r, g, b);
@@ -125,10 +135,12 @@ void CSudokuMFCDlg::SetText(const std::wstring& text, uint8_t r, uint8_t g, uint
 	textTimer = 0;
 }
 
+//Linksclick
 void CSudokuMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	try
 	{
+		//Koordinaten umwandeln und Umrandung setzen
 		Vec2 position = userInterface.ConvertCoordinatesToPosition(Vec2(point.x, point.y));
 		userInterface.SetBorder(position);
 	}
@@ -141,21 +153,25 @@ void CSudokuMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 
+//Timer Event
 void CSudokuMFCDlg::OnTimer(UINT_PTR nIDEvent)
 {
-	static int i = 0;
+	static int i = 0; //Frame counter
 
+	//Update und Render Loop
 	Update(i);
 	Draw();
 
 	i++;
+
 	CDialogEx::OnTimer(nIDEvent);
 }
 
 void CSudokuMFCDlg::Update(int frame) 
 {
+	//Text nach Änderung für 30 Frames (3 Sekunden) anzeigen
 	textTimer++;
-	if (textState != TextState::Normal && textTimer > 20)
+	if (textState != TextState::Normal && textTimer > 30)
 	{
 		SetText(L"Select a field and type a number 1-9!", 0, 0, 0, TextState::Normal);
 	}
@@ -167,6 +183,7 @@ void CSudokuMFCDlg::Draw()
 
 	try
 	{
+		//Geänderte Sprites neu zeichnen
 		userInterface.GetSpriteList().Update(&dc, 0, 0);
 	}
 	catch (const std::exception& e)
@@ -176,17 +193,20 @@ void CSudokuMFCDlg::Draw()
 	}
 }
 
+//Tasteneingabe abfangen
 BOOL CSudokuMFCDlg::PreTranslateMessage(MSG* pMsg)
 {
 	if (pMsg->message == WM_KEYDOWN)
 	{
-		if (pMsg->wParam >= '0' && pMsg->wParam <= '9')
+		if (pMsg->wParam >= '0' && pMsg->wParam <= '9') //Eingabe Tastatur 1-9
 		{
 			char key = (char)pMsg->wParam;
 
 			try
 			{
+				//Feld Eingabe setzen
 				userInterface.SetField(userInterface.GetLastMousePos(), key);
+
 			}
 			catch (const std::exception& e)
 			{
@@ -208,8 +228,10 @@ void CSudokuMFCDlg::OnBnClickedButton2()
 
 	try
 	{
+		//Sudoku zurücksetzen und User Interface aktualisieren
 		sudoku.ClearSudoku();
 		userInterface.CompleteUpdate(sudoku.GetFields());
+		userInterface.ClearUndo();
 	}
 	catch (const std::exception& e)
 	{
@@ -225,6 +247,7 @@ void CSudokuMFCDlg::OnBnClickedButton1()
 
 	try
 	{
+		//Sudoku speichern
 		sudoku.FillFieldBuffer(userInterface.GetTempFieldBuffer());
 		sudoku.SaveToFile();
 	}
@@ -238,8 +261,9 @@ void CSudokuMFCDlg::OnBnClickedButton1()
 //LOAD
 void CSudokuMFCDlg::OnBnClickedButton6()
 {
-	MenuMFC dlg;
+	MenuMFC dlg; //Menu erstellen
 
+	//Sudoku schließen
 	CWnd* pMainWnd = AfxGetMainWnd();
 	if (pMainWnd)
 	{
@@ -265,6 +289,7 @@ void CSudokuMFCDlg::OnBnClickedButton4()
 
 	try
 	{
+		//Sudoku lösen und User Interface aktualisieren
 		if (!solver.SolveSudoku())
 		{
 			MessageBoxA(nullptr, "Not solvable", "Error", MB_OK | MB_ICONERROR);
@@ -281,6 +306,7 @@ void CSudokuMFCDlg::OnBnClickedButton4()
 //EXIT
 void CSudokuMFCDlg::OnBnClickedButton5()
 {
+	//Dialog schließen
 	CWnd* pMainWnd = AfxGetMainWnd();
 	if (pMainWnd)
 	{

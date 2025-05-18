@@ -3,12 +3,14 @@
 
 void Undo::AddUndo(Vec2 position, char number)
 {
+	//Undo Feld in Stack hinzufügen
 	UndoField undoField = { position.x, position.y, number };
 	undoStack.push_back(undoField);
 }
 
 bool Undo::UndoLast(char* fields, UndoField& undoField)
 {
+	//letzten Zug zurücksetzen wenn er existiert
 	if (!undoStack.empty())
 	{
 		UndoField lastUndo = undoStack.back();

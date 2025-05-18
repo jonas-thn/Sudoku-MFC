@@ -1,13 +1,20 @@
 #include "pch.h"
 #include "Solver.h"
 
+//dynamischen Speicher freigeben
 Solver::~Solver()
 {
 	delete[] fields;
 }
 
+//Löser mit Datei-Feldern initialisieren
 void Solver::Init(const std::string& original)
 {
+	if (fields)
+	{
+		delete[] fields;
+	}
+
 	fields = new char[WIDTH * HEIGHT];
 
 	if (!fields)
@@ -69,6 +76,7 @@ char Solver::GetField(const int index) const
 	return fields[index];
 }
 
+//Prüfen ob Nummer in Reihe
 bool Solver::NumberInRow(int row, char number) const
 {
 	for (int x = 0; x < WIDTH; x++)
@@ -82,6 +90,7 @@ bool Solver::NumberInRow(int row, char number) const
 	return false;
 }
 
+//Prüfen ob Nummer in Spalte
 bool Solver::NumberInColumn(int column, char number) const
 {
 	for (int y = 0; y < HEIGHT; y++)
@@ -95,14 +104,16 @@ bool Solver::NumberInColumn(int column, char number) const
 	return false;
 }
 
+//Prüfen ob Nummer in Quadrat
 bool Solver::NumberIn3x3(const Vec2& position, char number) const
 {
+	//durch BOX teilen (abgerundet) und wieder mit BOX multiplizieren um lokalen 0,0 index von box zu erhalten
 	int xBox = position.x / (int)BOX; 
 	int yBox = position.y / (int)BOX; 
-
 	int xStart = xBox * BOX; 
 	int yStart = yBox * BOX;
 
+	//3x3 Feld mit doppelter for-Schleife prüfen
 	for (int y = 0; y < BOX; y++)
 	{
 		for (int x = 0; x < BOX; x++)
@@ -119,6 +130,7 @@ bool Solver::NumberIn3x3(const Vec2& position, char number) const
 	return false; 
 }
 
+//Reihe, Spalte und Quadrat Test zusammenfügen
 bool Solver::CanPlaceNumber(const Vec2& position, char number) const
 {
 	bool rowTest = !NumberInRow(position.y, number); 
@@ -128,6 +140,7 @@ bool Solver::CanPlaceNumber(const Vec2& position, char number) const
 	return (rowTest && columnTest && boxTest);
 }
 
+//Alle leeren Felder von Sudoku finden, relevant für Löser
 int Solver::FindEmptyFields()
 {
 	emptyFields.clear();
@@ -150,12 +163,15 @@ int Solver::FindEmptyFields()
 	return count;
 }
 
+//Sudoku lösen
 bool Solver::SolveSudoku()
 {
+	//leere Felder + Anzahl finden
 	int fieldsToTest = FindEmptyFields(); 
 
 	int index = 0;
 
+	//alle leeren Felder durchgehen
 	while (index >= 0 && index < fieldsToTest)
 	{
 		EmptyField fieldTemp = emptyFields[index]; 
@@ -163,31 +179,41 @@ bool Solver::SolveSudoku()
 		int startNumberTemp = fieldTemp.startNumber;
 		bool found = false; 
 
+		//alle Zahlen durchgehen
 		for (int testNumber = fieldTemp.startNumber; testNumber <= 9; testNumber++)
 		{
+			//teste ob aktuelle Zahl möglich
 			char numToChar = (char)(testNumber + '0');
 			if (CanPlaceNumber(fieldTemp.position, numToChar)) 
 			{
+				//Feld setzen
 				SetField(fieldTemp.position, numToChar); 
 
+				//Test Nummer für nächsten Durchgang erhöhen
 				EmptyField newField = { fieldTemp.position, numToChar, testNumber + 1 };
 				emptyFields[index] = newField; 
-
+#
+				//nächstes Feld betrachten
 				index++;
 				found = true;
 				break;
 			}
 		}
 
+		//keine Zahl möglich
 		if (!found) 
 		{
+			//Feld zurücksetzen
 			SetField(fieldTemp.position, '0'); 
+			//Test Nummer nur von diesem Feld auf 1 zurücksetzen
 			EmptyField undoField = { fieldTemp.position, '0', 1 }; 
 			emptyFields[index] = undoField;
 
+			//vorheriges Feld betrachten
 			index--;
 		}
 	}
 	
+	//Rückgabe ob erfolgreich
 	return (index < 0 ? false : true);
 }

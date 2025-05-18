@@ -5,7 +5,10 @@
 #include "Vec2.h"
 #include <algorithm>
 #include "Undo.h"
+#include "CustomExceptions.h"
+#include <memory>
 
+//Umrandung Sudoku Feld
 struct Border
 {
 	Border() = default;
@@ -23,6 +26,7 @@ private:
 	Vec2 offsets = Vec2(5, 5);
 };
 
+//Datenstruktur für die Sprites
 struct SpriteData
 {
 	SpriteData(CSprite* sprite, Vec2 position, int number)
@@ -37,8 +41,9 @@ class UserInterface
 {
 public:
 	UserInterface() = default;
-	~UserInterface() = default;
+	~UserInterface();
 
+	//Koordinaten umwandeln (Bildschirm -> Sudoku)
 	Vec2 ConvertPositionToCoordinates(const Vec2& position);
 	Vec2 ConvertCoordinatesToPosition(const Vec2& coordinates);
 
@@ -57,6 +62,7 @@ public:
 	Vec2 GetLastMousePos() const;
 
 	void TriggerUndo();
+	void ClearUndo();
 	
 private:
 	Undo undo;
@@ -64,6 +70,7 @@ private:
 	CDIB framebuffer;
 	CSprite sudokuBackground;
 
+	//Diemnsion = Breite/9, Höhe/9
 	const Vec2 tileDimension = Vec2(50, 47);
 	const Vec2 offsets = Vec2(5, 10);
 	CSpriteList spriteList;

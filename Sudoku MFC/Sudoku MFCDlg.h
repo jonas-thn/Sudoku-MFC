@@ -54,10 +54,12 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
 private:
+	//Update und Render Loop
 	void Update(int frame);
 	void Draw();
 	Difficulty difficulty = Difficulty::Easy;
 public:
+	//Botton Events
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton6();

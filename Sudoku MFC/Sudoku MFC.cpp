@@ -23,6 +23,7 @@ BOOL CSudokuMFCApp::InitInstance()
 {
 	CWinApp::InitInstance();
 
+	//App mit Menü starten
 	MenuMFC menu;
 	m_pMainWnd = &menu;
 	INT_PTR nResponse = menu.DoModal();
