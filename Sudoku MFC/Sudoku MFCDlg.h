@@ -7,6 +7,14 @@
 #include "Solver.h"
 #include "Random.h"
 
+enum class TextState
+{
+	Normal,
+	Save,
+	Reset,
+	Solved
+};
+
 class CSudokuMFCDlg : public CDialogEx
 {
 public:
@@ -27,17 +35,26 @@ protected:
 
 	virtual void DoDataExchange(CDataExchange* pDX);
 	BOOL CSudokuMFCDlg::PreTranslateMessage(MSG* pMsg) override;
+	HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 
 	Sudoku sudoku;
 	UserInterface userInterface;
 	Solver solver;
+
+	CStatic staticText;
+	TextState textState = TextState::Normal;
+	COLORREF textColor;
+	CBrush bgBrush;
+	int textTimer = 0;
+
+	void SetText(const std::wstring& text, uint8_t r, uint8_t g, uint8_t b, TextState textState);
 
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
 private:
-	void Update();
+	void Update(int frame);
 	void Draw();
 	Difficulty difficulty = Difficulty::Easy;
 public:

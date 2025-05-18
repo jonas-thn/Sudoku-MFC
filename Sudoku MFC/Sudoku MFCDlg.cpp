@@ -14,11 +14,15 @@ CSudokuMFCDlg::CSudokuMFCDlg(CWnd* pParent, Difficulty difficulty)
 {
 	this->difficulty = difficulty;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	textColor = RGB(0, 0, 0); 
+	bgBrush.CreateSolidBrush(RGB(255, 255, 255));
 }
 
 void CSudokuMFCDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+
+	DDX_Control(pDX, IDC_STATIC, staticText);
 }
 
 BEGIN_MESSAGE_MAP(CSudokuMFCDlg, CDialogEx)
@@ -31,6 +35,7 @@ BEGIN_MESSAGE_MAP(CSudokuMFCDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON3, &CSudokuMFCDlg::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CSudokuMFCDlg::OnBnClickedButton4)
 	ON_BN_CLICKED(IDC_BUTTON5, &CSudokuMFCDlg::OnBnClickedButton5)
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 BOOL CSudokuMFCDlg::OnInitDialog()
@@ -77,6 +82,20 @@ BOOL CSudokuMFCDlg::OnInitDialog()
 	return TRUE; 
 }
 
+HBRUSH CSudokuMFCDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	if (pWnd->GetDlgCtrlID() == IDC_STATIC)
+	{
+		pDC->SetTextColor(textColor);
+		pDC->SetBkMode(TRANSPARENT);
+		return bgBrush;
+	}
+
+	return hbr;
+}
+
 void CSudokuMFCDlg::OnPaint()
 {
 	CPaintDC dc(this);
@@ -95,6 +114,15 @@ void CSudokuMFCDlg::OnPaint()
 	}
 
 	CDialogEx::OnPaint();
+}
+
+void CSudokuMFCDlg::SetText(const std::wstring& text, uint8_t r, uint8_t g, uint8_t b, TextState textSate)
+{
+	textState = TextState::Save;
+	staticText.SetWindowTextW(text.data());
+	textColor = RGB(r, g, b);
+	staticText.Invalidate();
+	textTimer = 0;
 }
 
 void CSudokuMFCDlg::OnLButtonDown(UINT nFlags, CPoint point)
@@ -117,14 +145,21 @@ void CSudokuMFCDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	static int i = 0;
 
-	Update();
+	Update(i);
 	Draw();
 
 	i++;
 	CDialogEx::OnTimer(nIDEvent);
 }
 
-void CSudokuMFCDlg::Update() {}
+void CSudokuMFCDlg::Update(int frame) 
+{
+	textTimer++;
+	if (textState != TextState::Normal && textTimer > 20)
+	{
+		SetText(L"Select a field and type a number 1-9!", 0, 0, 0, TextState::Normal);
+	}
+}
 
 void CSudokuMFCDlg::Draw()
 {
@@ -169,6 +204,8 @@ BOOL CSudokuMFCDlg::PreTranslateMessage(MSG* pMsg)
 //RESET
 void CSudokuMFCDlg::OnBnClickedButton2()
 {
+	SetText(L"Current Sudoku has been reset to its original values!", 0, 0, 200, TextState::Reset);
+
 	try
 	{
 		sudoku.ClearSudoku();
@@ -184,6 +221,8 @@ void CSudokuMFCDlg::OnBnClickedButton2()
 //SAVE
 void CSudokuMFCDlg::OnBnClickedButton1()
 {
+	SetText(L"Current Sudoku is being saved!", 0, 150, 0, TextState::Save);
+
 	try
 	{
 		sudoku.FillFieldBuffer(userInterface.GetTempFieldBuffer());
@@ -222,6 +261,8 @@ void CSudokuMFCDlg::OnBnClickedButton3()
 //SOLVE
 void CSudokuMFCDlg::OnBnClickedButton4()
 {
+	SetText(L"The sudoku is now solved. Congratulations!", 212, 157, 19, TextState::Solved);
+
 	try
 	{
 		if (!solver.SolveSudoku())
@@ -237,6 +278,7 @@ void CSudokuMFCDlg::OnBnClickedButton4()
 	}
 }
 
+//EXIT
 void CSudokuMFCDlg::OnBnClickedButton5()
 {
 	CWnd* pMainWnd = AfxGetMainWnd();
